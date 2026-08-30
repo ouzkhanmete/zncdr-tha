@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Org overview — wireframe</title>
+<style>
+:root{
+  --bg:#F3F5F7; --surface:#FFFFFF; --surface-2:#F7F8FA;
+  --border:#DADFE3; --border-strong:#B7BFC6;
+  --ink:#1C2126; --ink-soft:#5B6570; --ink-faint:#8D959C;
+  --accent:#3A5A9B; --accent-soft:#E8EDF6;
+  --good:#2E7D46; --good-soft:#E4F3E8;
+  --warn:#8A5E00; --warn-soft:#FBF0D9;
+  --bad:#B3261E; --bad-soft:#FBE7E5;
+  --mono:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:14px;line-height:1.45}
+.ribbon{background:#2A2E33;color:#fff;text-align:center;font-size:11px;letter-spacing:.04em;padding:5px;text-transform:uppercase}
+.shell{max-width:1180px;margin:0 auto;padding:0 24px 60px}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid var(--border);margin-bottom:22px;flex-wrap:wrap;gap:10px}
+.crumb{font-size:13px;color:var(--ink-soft)}
+.crumb a{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent}
+.crumb a:hover{border-bottom-color:var(--accent)}
+.crumb .sep{margin:0 6px;color:var(--ink-faint)}
+.crumb .current{color:var(--ink);font-weight:600}
+.nav-links{font-size:12px;display:flex;gap:14px}
+.nav-links a{color:var(--ink-soft);text-decoration:none;padding:4px 0;border-bottom:2px solid transparent}
+.nav-links a.active{color:var(--ink);border-bottom-color:var(--accent);font-weight:600}
+.nav-links a:hover{color:var(--ink)}
+.page-head{margin-bottom:24px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.page-head h1{font-size:22px;margin:0 0 4px}
+.page-head p{margin:0;color:var(--ink-soft);font-size:14px;max-width:560px}
+.window-ctrl{font-size:12px;color:var(--ink-soft);border:1px solid var(--border);border-radius:5px;padding:7px 12px;background:var(--surface);white-space:nowrap}
+.window-ctrl b{color:var(--ink)}
+.daterange{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:5px 8px;flex-wrap:wrap}
+.daterange .preset{font-family:var(--sans);font-size:11.5px;color:var(--ink-soft);background:transparent;border:1px solid transparent;border-radius:4px;padding:3px 9px;cursor:pointer}
+.daterange .preset:hover{background:var(--surface-2);color:var(--ink)}
+.daterange .preset.active{background:var(--accent-soft);color:var(--accent);border-color:#C3D0E6;font-weight:700}
+.daterange .dr-sep{width:1px;height:18px;background:var(--border);margin:0 3px}
+.daterange input[type=date]{font-family:var(--mono);font-size:12px;color:var(--ink);border:1px solid var(--border);border-radius:4px;padding:3px 6px;background:var(--surface)}
+.daterange .dr-arrow{color:var(--ink-faint);font-size:12px}
+.daterange .dr-note{font-size:11px;color:var(--ink-faint);width:100%;padding-top:2px}
+.section{margin-bottom:32px}
+.section-title{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);font-weight:700;margin:0 0 12px;display:flex;align-items:center;gap:10px}
+.section-title .rule{flex:1;height:1px;background:var(--border)}
+.section-title .hint{text-transform:none;font-weight:400;letter-spacing:0;color:var(--ink-faint);font-size:11.5px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:1fr 1fr 1fr}
+.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:16px 18px}
+.card-label{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);font-weight:700;margin-bottom:8px}
+.stat{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:29px;font-weight:700;color:var(--ink);line-height:1}
+.stat.md{font-size:21px}
+.stat.sm{font-size:16px}
+.stat-note{font-size:12px;color:var(--ink-soft);margin-top:5px}
+.pair{display:flex;gap:0}
+.pair>div{flex:1;padding-right:16px}
+.pair>div+div{padding-left:16px;border-left:1px solid var(--border)}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap}
+.pill-good{background:var(--good-soft);color:var(--good)}
+.pill-warn{background:var(--warn-soft);color:var(--warn)}
+.pill-bad{background:var(--bad-soft);color:var(--bad)}
+.pill-neutral{background:var(--surface-2);color:var(--ink-soft);border:1px solid var(--border)}
+.spark{display:flex;align-items:flex-end;gap:3px;height:34px;margin-top:9px}
+.spark i{display:block;width:7px;background:var(--border-strong);border-radius:1px;font-style:normal}
+.spark i.now{background:var(--accent)}
+.spark i.bad{background:var(--bad)}
+.bar-track{position:relative;height:14px;background:var(--surface-2);border:1px solid var(--border);border-radius:4px}
+.bar-fill{position:absolute;top:0;left:0;bottom:0;border-radius:3px 0 0 3px}
+.bar-mark{position:absolute;top:-4px;bottom:-4px;width:0;border-left:2px dashed var(--ink-faint)}
+.bar-mark.stop{border-left:2px solid var(--bad)}
+.bar-mark.warn{border-left:2px solid var(--warn)}
+.bar-emoji{position:absolute;top:-13px;font-size:9px;line-height:1;transform:translateX(-50%)}
+.bar-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-soft);margin-top:16px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);font-weight:700;padding:8px 10px;border-bottom:1px solid var(--border-strong)}
+td{padding:9px 10px;border-bottom:1px solid var(--border)}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right}
+tr:last-child td{border-bottom:none}
+.hero{background:var(--accent-soft);border:1px solid #C7D3E8;border-radius:8px;padding:20px 22px;margin-bottom:28px}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.hero-title{font-size:13px;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.04em}
+.hero-title span{display:block;font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink-soft);font-size:12.5px;margin-top:3px;max-width:420px}
+.hero-inputs{display:flex;gap:22px;flex-wrap:wrap}
+.input-box label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);font-weight:700;margin-bottom:5px}
+.input-box .field{display:flex;align-items:center;background:#fff;border:1px solid var(--accent);border-radius:5px;padding:6px 10px;gap:5px}
+.input-box input{border:none;outline:none;font-family:var(--mono);font-size:16px;width:56px;background:transparent;color:var(--ink)}
+.input-box .unit{color:var(--ink-soft);font-size:12.5px}
+.hero-result{display:flex;gap:0;align-items:stretch;flex-wrap:wrap;background:#fff;border:1px solid #C7D3E8;border-radius:6px;padding:16px 18px}
+.hero-result .col{flex:1;padding:0 18px}
+.hero-result .col+.col{border-left:1px solid var(--border)}
+.hero-result .col .stat-note{margin-bottom:6px}
+.hero-net .stat{color:var(--good)}
+.hero-chart{margin-top:14px;background:#fff;border:1px solid #C7D3E8;border-radius:6px;padding:14px 18px}
+.link-list{display:flex;flex-wrap:wrap;gap:6px 16px}
+.link-list a{color:var(--accent);text-decoration:none;font-size:13px}
+.link-list a:hover{text-decoration:underline}
+.range{position:relative;height:44px;margin-top:14px}
+.range .line{position:absolute;top:22px;left:6px;right:6px;height:2px;background:var(--border-strong)}
+.range .dot{position:absolute;top:16px;width:12px;height:12px;border-radius:50%;transform:translateX(-50%)}
+.range .dot.median{background:var(--accent);width:16px;height:16px;top:14px;z-index:2}
+.range .dot.avgd{background:var(--ink-soft)}
+.range .dot.worst{background:var(--bad)}
+.range .rlabel{position:absolute;top:-6px;font-size:11px;color:var(--ink-soft);transform:translateX(-50%);white-space:nowrap;text-align:center}
+.range .rlabel b{display:block;font-family:var(--mono);color:var(--ink);font-size:12.5px}
+.fail-groups{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.fail-group h4{margin:0 0 3px;font-size:13px}
+.fail-group .fg-total{font-family:var(--mono);font-size:20px;font-weight:700}
+.fail-group .fg-sub{font-size:11.5px;color:var(--ink-soft);margin-bottom:10px}
+.fail-row{display:flex;justify-content:space-between;font-size:12.5px;padding:5px 0;border-top:1px solid var(--border)}
+.fail-row span.n{font-family:var(--mono);color:var(--ink-soft)}
+.fg-org{border-top:3px solid var(--warn)}
+.fg-platform{border-top:3px solid var(--accent)}
+.fg-task{border-top:3px solid var(--ink-faint)}
+.fg-org,.fg-platform,.fg-task{padding-top:10px}
+.flag-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--border)}
+.flag-row:first-child{border-top:none}
+.flag-row .fdesc{flex:1}
+.flag-row .fdesc b{font-size:13px}
+.flag-row .fdesc .fmeta{font-size:11.5px;color:var(--ink-soft);margin-top:2px}
+.states-strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:44px}
+.state-box{border:1px dashed var(--border-strong);border-radius:6px;padding:14px;background:var(--surface-2)}
+.state-box h4{margin:0 0 9px;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft)}
+.skeleton{height:10px;background:var(--border);border-radius:3px;margin-bottom:7px}
+.skeleton.w60{width:60%}
+.skeleton.w80{width:80%}
+.foot-note{margin-top:50px;font-size:11px;color:var(--ink-faint);text-align:center}
+svg text{font-family:var(--sans)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--ink-soft);margin-top:8px}
+.legend .lk{display:inline-flex;align-items:center;gap:5px}
+.legend .sw{width:9px;height:9px;border-radius:50%;background:var(--ink-faint);display:inline-block}
+.legend .sw.out{background:var(--bad)}
+.caption{font-size:12px;color:var(--ink-soft);margin-top:8px;max-width:640px}
+</style>
+</head>
+<body>
+<div class="ribbon">Wireframe — example data, not live</div>
+<div class="shell">
+
+  <div class="topbar">
+    <div class="crumb"><span class="current">Org overview</span></div>
+    <div class="nav-links">
+      <a class="active" href="org.html">Org</a>
+      <a href="team.html">Team</a>
+      <a href="engineer.html">Engineer</a>
+      <a href="run.html">Run</a>
+      <a href="index.html" style="margin-left:8px;color:var(--ink-faint)">index ↩</a>
+    </div>
+  </div>
+
+  <div class="page-head">
+    <div>
+      <h1>Org overview</h1>
+      <p>Is this paying for itself, and is anything going wrong I can't see?</p>
+    </div>
+    <div class="daterange">
+      <button class="preset">7d</button>
+      <button class="preset active">30d</button>
+      <button class="preset">90d</button>
+      <span class="dr-sep"></span>
+      <input type="date" value="2026-07-31" aria-label="From">
+      <span class="dr-arrow">&rarr;</span>
+      <input type="date" value="2026-08-29" aria-label="To">
+      <span class="dr-note">Days run midnight to midnight UTC</span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-top">
+      <div class="hero-title">Money spent vs. value returned
+        <span>Two guesses drive this — change them and the totals move.</span>
+      </div>
+      <div class="hero-inputs">
+        <div class="input-box">
+          <label>Hours saved per task</label>
+          <div class="field"><input type="number" value="1.0" step="0.5"><span class="unit">hrs</span></div>
+        </div>
+        <div class="input-box">
+          <label>Cost of an engineer hour</label>
+          <div class="field"><span class="unit">$</span><input type="number" value="85" step="5"></div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-result">
+      <div class="col">
+        <div class="stat-note">Value returned<br><span style="font-size:11px">1,652 finished tasks × 1.0 hr × $85</span></div>
+        <div class="stat">$140,420</div>
+      </div>
+      <div class="col">
+        <div class="stat-note">Money spent<br><span style="font-size:11px">every run, failures included</span></div>
+        <div class="stat">$12,400</div>
+      </div>
+      <div class="col hero-net">
+        <div class="stat-note">Net</div>
+        <div class="stat">+$128,020</div>
+        <div class="stat-note"><span class="pill pill-good">+6% vs prior 30d</span></div>
+      </div>
+    </div>
+    <div class="hero-chart">
+      <div class="card-label" style="margin-bottom:4px">Spend vs. value back, by week — the gap is the net</div>
+      <svg viewBox="0 0 560 145" style="width:100%;height:auto;max-width:560px">
+        <line x1="50" y1="118" x2="470" y2="118" stroke="#B7BFC6"/>
+        <text x="8" y="22" font-size="10" fill="#8D959C">$140k</text>
+        <text x="18" y="121" font-size="10" fill="#8D959C">$0</text>
+        <polygon points="60,35.5 160,32 260,29 360,26.5 460,22.9 460,94 360,95.9 260,96.6 160,97.8 60,98.5" fill="#E4F3E8"/>
+        <polyline points="60,35.5 160,32 260,29 360,26.5 460,22.9" fill="none" stroke="#2E7D46" stroke-width="2"/>
+        <polyline points="60,98.5 160,97.8 260,96.6 360,95.9 460,94" fill="none" stroke="#3A5A9B" stroke-width="2"/>
+        <circle cx="460" cy="22.9" r="3.5" fill="#2E7D46"/>
+        <circle cx="460" cy="94" r="3.5" fill="#3A5A9B"/>
+        <text x="60" y="132" font-size="10.5" fill="#5B6570">Jul 31</text>
+        <text x="460" y="132" font-size="10.5" fill="#5B6570" text-anchor="end">Aug 29</text>
+      </svg>
+      <div class="legend">
+        <span class="lk"><i class="sw" style="background:#2E7D46"></i>Value back</span>
+        <span class="lk"><i class="sw" style="background:#3A5A9B"></i>💰</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="stat-note" style="margin:0 0 28px;font-size:13.5px;color:var(--ink)">At $7.51 a finished task against an $85 engineer hour, this pays for itself the moment a task saves more than <b>about 5 minutes</b>.</div>
+
+  <!-- ADOPTION -->
+  <div class="section">
+    <div class="section-title">Adoption — are people using it<span class="rule"></span></div>
+    <div class="grid g3">
+      <div class="card">
+        <div class="card-label">Adoption rate</div>
+        <div class="stat">78%</div>
+        <div class="stat-note">102/130 seats · 7d 61%</div>
+        <div class="bar-track" style="margin-top:10px"><div class="bar-fill" style="width:78%;background:var(--accent)"></div></div>
+      </div>
+      <div class="card">
+        <div class="card-label">Sticking rate</div>
+        <div class="stat">69%</div>
+        <div class="stat-note">74/107 who tried it, active in 7d</div>
+        <div class="bar-track" style="margin-top:10px"><div class="bar-fill" style="width:69%;background:var(--accent)"></div></div>
+      </div>
+      <div class="card">
+        <div class="card-label">Depth of use — 130 seats, 30d</div>
+        <div class="bar-track" style="height:22px;margin-top:6px;overflow:hidden">
+          <div class="bar-fill" style="width:17%;background:var(--accent)"></div>
+          <div class="bar-fill" style="left:17%;width:35%;background:#7C97C4"></div>
+          <div class="bar-fill" style="left:52%;width:26%;background:#BFCBE2"></div>
+          <div class="bar-fill" style="left:78%;width:22%;background:var(--border-strong)"></div>
+        </div>
+        <div class="legend">
+          <span class="lk">🚀 22</span>
+          <span class="lk">🔧 46</span>
+          <span class="lk">🌱 34</span>
+          <span class="lk">💤 28</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OUTCOME -->
+  <div class="section">
+    <div class="section-title">Outcome — did anything useful come out<span class="rule"></span></div>
+    <div class="grid g2">
+      <div class="card">
+        <div class="card-label">Success rate — always both</div>
+        <div class="pair">
+          <div>
+            <div class="stat-note">First try</div>
+            <div class="stat md">71%</div>
+            <svg viewBox="0 0 100 34" style="width:100%;height:34px;margin-top:6px">
+              <polyline points="4,30 19.33,22.6 34.67,26.3 50,15.1 65.33,11.4 80.67,4 96,7.7" fill="none" stroke="#B7BFC6" stroke-width="1.6"/>
+              <circle cx="96" cy="7.7" r="2.6" fill="#3A5A9B"/>
+            </svg>
+            <div class="stat-note">7d 74%</div>
+          </div>
+          <div>
+            <div class="stat-note">In the end</div>
+            <div class="stat md">89%</div>
+            <svg viewBox="0 0 100 34" style="width:100%;height:34px;margin-top:6px">
+              <polyline points="4,30 19.33,24.8 34.67,30 50,19.6 65.33,14.4 80.67,9.2 96,4" fill="none" stroke="#B7BFC6" stroke-width="1.6"/>
+              <circle cx="96" cy="4" r="2.6" fill="#3A5A9B"/>
+            </svg>
+            <div class="stat-note">7d 91%</div>
+          </div>
+        </div>
+        <div class="stat-note" style="margin-top:10px">82 cancelled early — counted apart, in neither number.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Finished tasks — next to rework, always</div>
+        <div class="pair">
+          <div>
+            <div class="stat-note">Finished tasks</div>
+            <div class="stat md">1,652</div>
+            <svg viewBox="0 0 100 34" style="width:100%;height:34px;margin-top:6px">
+              <polyline points="4,30 27,23.5 50,20.3 73,10.5 96,4" fill="none" stroke="#B7BFC6" stroke-width="1.6"/>
+              <circle cx="96" cy="4" r="2.6" fill="#3A5A9B"/>
+            </svg>
+          </div>
+          <div>
+            <div class="stat-note">Rework rate</div>
+            <div class="stat md">6.4%</div>
+            <svg viewBox="0 0 100 34" style="width:100%;height:34px;margin-top:6px">
+              <polyline points="4,4 27,15.1 50,20.7 73,26.3 96,30" fill="none" stroke="#B7BFC6" stroke-width="1.6"/>
+              <circle cx="96" cy="30" r="2.6" fill="#3A5A9B"/>
+            </svg>
+          </div>
+        </div>
+        <div class="stat-note" style="margin-top:10px">Merged changes reverted or rewritten within 14 days.</div>
+      </div>
+    </div>
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card">
+        <div class="card-label">What came out</div>
+        <table>
+          <tr><td>🔀 opened</td><td class="num">1,557</td></tr>
+          <tr><td>🔀 merged</td><td class="num">1,230 (79%)</td></tr>
+          <tr><td>💾</td><td class="num">490</td></tr>
+          <tr><td>📄</td><td class="num">202</td></tr>
+          <tr><td>📊</td><td class="num">74</td></tr>
+        </table>
+        <div class="stat-note">🔀 merged is what counts — unmerged helped no one.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Runs per week — next to success rate, always</div>
+        <div class="pair">
+          <div>
+            <div class="stat-note">Runs this week</div>
+            <div class="stat md">612</div>
+            <svg viewBox="0 0 100 34" style="width:100%;height:34px;margin-top:6px">
+              <polyline points="4,30 27,24.9 50,17.7 73,11.2 96,4" fill="none" stroke="#B7BFC6" stroke-width="1.6"/>
+              <circle cx="96" cy="4" r="2.6" fill="#3A5A9B"/>
+            </svg>
+          </div>
+          <div>
+            <div class="stat-note">Success, first try</div>
+            <div class="stat md">73%</div>
+            <svg viewBox="0 0 100 34" style="width:100%;height:34px;margin-top:6px">
+              <polyline points="4,30 27,23.5 50,17 73,10.5 96,4" fill="none" stroke="#B7BFC6" stroke-width="1.6"/>
+              <circle cx="96" cy="4" r="2.6" fill="#3A5A9B"/>
+            </svg>
+          </div>
+        </div>
+        <div class="stat-note" style="margin-top:10px">Last 5 weeks</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MONEY -->
+  <div class="section">
+    <div class="section-title">Money<span class="rule"></span></div>
+    <div class="grid g2">
+      <div class="card">
+        <div class="card-label">Cost per finished task — median leads</div>
+        <div class="range">
+          <div class="line"></div>
+          <div class="rlabel" style="left:8%"><b>$4.20</b>Median</div>
+          <div class="dot median" style="left:8%"></div>
+          <div class="rlabel" style="left:24%"><b>$7.51</b>Average</div>
+          <div class="dot avgd" style="left:24%"></div>
+          <div class="rlabel" style="left:94%"><b>$148</b>Worst case</div>
+          <div class="dot worst" style="left:94%"></div>
+        </div>
+        <div class="stat-note">Median leads — one runaway run drags the average, not the median. Failed attempts count too, so cheap-but-flaky can cost more than reliable-but-pricier.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Tokens used — separate from money, on purpose</div>
+        <div class="bar-track" style="height:22px;overflow:hidden">
+          <div class="bar-fill" style="width:24%;background:var(--accent)"></div>
+          <div class="bar-fill" style="left:24%;width:52%;background:#BFCBE2"></div>
+          <div class="bar-fill" style="left:76%;width:18%;background:#7C97C4"></div>
+          <div class="bar-fill" style="left:94%;width:6%;background:var(--border-strong)"></div>
+        </div>
+        <div class="legend">
+          <span class="lk"><i class="sw" style="background:var(--accent)"></i>Fresh input 812M</span>
+          <span class="lk"><i class="sw" style="background:#BFCBE2"></i>Cached input 2.4B</span>
+          <span class="lk"><i class="sw" style="background:#7C97C4"></i>Output 190M</span>
+          <span class="lk"><i class="sw" style="background:var(--border-strong)"></i>Thinking 96M</span>
+        </div>
+        <div class="stat-note" style="margin-top:8px">Cached runs ~1/10 the price of fresh — this shows volume, not spend.</div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <div class="card-label">Budget by team — worst pace first</div>
+      <table>
+        <thead><tr><th>Team</th><th>Spent / limit</th><th>Used</th><th style="width:220px">Pace</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><a href="team.html" style="color:var(--accent);text-decoration:none">Nova</a></td>
+            <td class="num">$2,070 / $1,800</td>
+            <td class="num">115%</td>
+            <td>
+              <div class="bar-track">
+                <div class="bar-fill" style="width:100%;background:var(--bad)"></div>
+                <div class="bar-mark" style="left:70%"></div>
+                <span class="bar-emoji" style="left:80%">⚠️</span>
+                <div class="bar-mark warn" style="left:80%"></div>
+                <span class="bar-emoji" style="left:100%">🛑</span>
+                <div class="bar-mark stop" style="left:100%"></div>
+              </div>
+            </td>
+            <td><span class="pill pill-bad">over stop line</span></td>
+          </tr>
+          <tr>
+            <td>Atlas</td><td class="num">$3,150 / $4,000</td><td class="num">79%</td>
+            <td>
+              <div class="bar-track">
+                <div class="bar-fill" style="width:79%;background:var(--good)"></div>
+                <div class="bar-mark" style="left:70%"></div>
+                <span class="bar-emoji" style="left:80%">⚠️</span>
+                <div class="bar-mark warn" style="left:80%"></div>
+                <span class="bar-emoji" style="left:100%">🛑</span>
+                <div class="bar-mark stop" style="left:100%"></div>
+              </div>
+            </td>
+            <td><span class="pill pill-good">on pace</span></td>
+          </tr>
+          <tr>
+            <td>Foundry</td><td class="num">$1,600 / $2,900</td><td class="num">55%</td>
+            <td>
+              <div class="bar-track">
+                <div class="bar-fill" style="width:55%;background:var(--good)"></div>
+                <div class="bar-mark" style="left:70%"></div>
+                <span class="bar-emoji" style="left:80%">⚠️</span>
+                <div class="bar-mark warn" style="left:80%"></div>
+                <span class="bar-emoji" style="left:100%">🛑</span>
+                <div class="bar-mark stop" style="left:100%"></div>
+              </div>
+            </td>
+            <td><span class="pill pill-good">on pace</span></td>
+          </tr>
+          <tr>
+            <td>Anchor</td><td class="num">$3,700 / $6,800</td><td class="num">54%</td>
+            <td>
+              <div class="bar-track">
+                <div class="bar-fill" style="width:54%;background:var(--good)"></div>
+                <div class="bar-mark" style="left:70%"></div>
+                <span class="bar-emoji" style="left:80%">⚠️</span>
+                <div class="bar-mark warn" style="left:80%"></div>
+                <span class="bar-emoji" style="left:100%">🛑</span>
+                <div class="bar-mark stop" style="left:100%"></div>
+              </div>
+            </td>
+            <td><span class="pill pill-good">on pace</span></td>
+          </tr>
+          <tr>
+            <td>Beacon</td><td class="num">$950 / $2,100</td><td class="num">45%</td>
+            <td>
+              <div class="bar-track">
+                <div class="bar-fill" style="width:45%;background:var(--good)"></div>
+                <div class="bar-mark" style="left:70%"></div>
+                <span class="bar-emoji" style="left:80%">⚠️</span>
+                <div class="bar-mark warn" style="left:80%"></div>
+                <span class="bar-emoji" style="left:100%">🛑</span>
+                <div class="bar-mark stop" style="left:100%"></div>
+              </div>
+            </td>
+            <td><span class="pill pill-good">on pace</span></td>
+          </tr>
+          <tr>
+            <td>Lighthouse</td><td class="num">$390 / $1,000</td><td class="num">39%</td>
+            <td>
+              <div class="bar-track">
+                <div class="bar-fill" style="width:39%;background:var(--good)"></div>
+                <div class="bar-mark" style="left:70%"></div>
+                <span class="bar-emoji" style="left:80%">⚠️</span>
+                <div class="bar-mark warn" style="left:80%"></div>
+                <span class="bar-emoji" style="left:100%">🛑</span>
+                <div class="bar-mark stop" style="left:100%"></div>
+              </div>
+            </td>
+            <td><span class="pill pill-good">on pace</span></td>
+          </tr>
+          <tr>
+            <td>Comet</td><td class="num">$180 / $500</td><td class="num">36%</td>
+            <td>
+              <div class="bar-track">
+                <div class="bar-fill" style="width:36%;background:var(--good)"></div>
+                <div class="bar-mark" style="left:70%"></div>
+                <span class="bar-emoji" style="left:80%">⚠️</span>
+                <div class="bar-mark warn" style="left:80%"></div>
+                <span class="bar-emoji" style="left:100%">🛑</span>
+                <div class="bar-mark stop" style="left:100%"></div>
+              </div>
+            </td>
+            <td><span class="pill pill-good">on pace</span></td>
+          </tr>
+          <tr>
+            <td>Pinnacle</td><td class="num">$360 / $2,000</td><td class="num">18%</td>
+            <td>
+              <div class="bar-track">
+                <div class="bar-fill" style="width:18%;background:var(--good)"></div>
+                <div class="bar-mark" style="left:70%"></div>
+                <span class="bar-emoji" style="left:80%">⚠️</span>
+                <div class="bar-mark warn" style="left:80%"></div>
+                <span class="bar-emoji" style="left:100%">🛑</span>
+                <div class="bar-mark stop" style="left:100%"></div>
+              </div>
+            </td>
+            <td><span class="pill pill-good">on pace</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="stat-note">Dashed = day of month gone. Worst pace first — a spend list, not a ranking.</div>
+    </div>
+  </div>
+
+  <!-- RELIABILITY -->
+  <div class="section">
+    <div class="section-title">Reliability — what broke, whose problem<span class="rule"></span></div>
+    <div class="card">
+      <div class="card-label">Failure rate: 14.0% of ended runs, by who can fix it</div>
+      <svg viewBox="0 0 600 300" style="width:100%;height:auto;max-width:640px">
+        <g transform="translate(0,0)">
+          <text x="4" y="9" font-size="11.5" font-weight="700" fill="#1C2126">🔒 Org setup</text>
+          <text x="86" y="9" font-size="10.5" fill="#5B6570">6.1% · fixable this afternoon</text>
+        </g>
+        <g transform="translate(0,20)">
+          <text x="185" y="9" text-anchor="end" font-size="10" fill="#1C2126">Missing permission</text>
+          <rect x="190" y="-1" width="315" height="12" rx="2" fill="#8A5E00"/>
+          <text x="511" y="9" font-size="10" fill="#5B6570">2.1%</text>
+        </g>
+        <g transform="translate(0,37)">
+          <text x="185" y="9" text-anchor="end" font-size="10" fill="#1C2126">Missing secret or login</text>
+          <rect x="190" y="-1" width="270" height="12" rx="2" fill="#8A5E00"/>
+          <text x="466" y="9" font-size="10" fill="#5B6570">1.8%</text>
+        </g>
+        <g transform="translate(0,54)">
+          <text x="185" y="9" text-anchor="end" font-size="10" fill="#1C2126">Tool not available</text>
+          <rect x="190" y="-1" width="135" height="12" rx="2" fill="#8A5E00"/>
+          <text x="331" y="9" font-size="10" fill="#5B6570">0.9%</text>
+        </g>
+        <g transform="translate(0,71)">
+          <text x="185" y="9" text-anchor="end" font-size="10" fill="#1C2126">Network / sandbox blocked</text>
+          <rect x="190" y="-1" width="105" height="12" rx="2" fill="#8A5E00"/>
+          <text x="301" y="9" font-size="10" fill="#5B6570">0.7%</text>
+        </g>
+        <g transform="translate(0,88)">
+          <text x="185" y="9" text-anchor="end" font-size="10" fill="#1C2126">Hit token or time limit</text>
+          <rect x="190" y="-1" width="90" height="12" rx="2" fill="#8A5E00"/>
+          <text x="286" y="9" font-size="10" fill="#5B6570">0.6%</text>
+        </g>
+        <g transform="translate(0,113)">
+          <text x="4" y="9" font-size="11.5" font-weight="700" fill="#1C2126">⚙️ Platform</text>
+          <text x="78" y="9" font-size="10.5" fill="#5B6570">2.4% · ours to fix</text>
+        </g>
+        <g transform="translate(0,133)">
+          <text x="185" y="9" text-anchor="end" font-size="10" fill="#1C2126">Ran out of context room</text>
+          <rect x="190" y="-1" width="165" height="12" rx="2" fill="#3A5A9B"/>
+          <text x="361" y="9" font-size="10" fill="#5B6570">1.1%</text>
+        </g>
+        <g transform="translate(0,150)">
+          <text x="185" y="9" text-anchor="end" font-size="10" fill="#1C2126">Infrastructure crash</text>
+          <rect x="190" y="-1" width="120" height="12" rx="2" fill="#3A5A9B"/>
+          <text x="316" y="9" font-size="10" fill="#5B6570">0.8%</text>
+        </g>
+        <g transform="translate(0,167)">
+          <text x="185" y="9" text-anchor="end" font-size="10" fill="#1C2126">Rate limited</text>
+          <rect x="190" y="-1" width="75" height="12" rx="2" fill="#3A5A9B"/>
+          <text x="271" y="9" font-size="10" fill="#5B6570">0.5%</text>
+        </g>
+        <g transform="translate(0,192)">
+          <text x="4" y="9" font-size="11.5" font-weight="700" fill="#1C2126">🧩 Task</text>
+          <text x="58" y="9" font-size="10.5" fill="#5B6570">5.5% · the job was hard, not broken</text>
+        </g>
+        <g transform="translate(0,212)">
+          <text x="185" y="9" text-anchor="end" font-size="10" fill="#1C2126">Tests failed</text>
+          <rect x="190" y="-1" width="330" height="12" rx="2" fill="#8D959C"/>
+          <text x="526" y="9" font-size="10" fill="#5B6570">2.2%</text>
+        </g>
+        <g transform="translate(0,229)">
+          <text x="185" y="9" text-anchor="end" font-size="10" fill="#1C2126">Nothing useful produced</text>
+          <rect x="190" y="-1" width="225" height="12" rx="2" fill="#8D959C"/>
+          <text x="421" y="9" font-size="10" fill="#5B6570">1.5%</text>
+        </g>
+        <g transform="translate(0,246)">
+          <text x="185" y="9" text-anchor="end" font-size="10" fill="#1C2126">Dependency install failed</text>
+          <rect x="190" y="-1" width="210" height="12" rx="2" fill="#8D959C"/>
+          <text x="406" y="9" font-size="10" fill="#5B6570">1.4%</text>
+        </g>
+        <g transform="translate(0,263)">
+          <text x="185" y="9" text-anchor="end" font-size="10" fill="#1C2126">Model refused</text>
+          <rect x="190" y="-1" width="60" height="12" rx="2" fill="#8D959C"/>
+          <text x="256" y="9" font-size="10" fill="#5B6570">0.4%</text>
+        </g>
+      </svg>
+      <div class="caption">Cancelled by a person: 3.9% of all runs — tracked apart, not a failure.</div>
+    </div>
+    <div class="grid g3" style="margin-top:14px">
+      <div class="card">
+        <div class="card-label">Quiet failures</div>
+        <div class="stat sm">34 runs <span class="pill pill-bad" style="margin-left:6px">flagged</span></div>
+        <div class="stat-note">Reported success without doing the job — nothing else flags it.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Retry rate</div>
+        <div class="stat sm">11%</div>
+        <div class="stat-note">Needed more than one run — real money on redoing work.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Time before giving up</div>
+        <div class="stat sm">p50 40s · p95 6m 20s</div>
+        <div class="stat-note">Catches slow failures that burn budget before anyone notices.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAM COMPARISON -->
+  <div class="section">
+    <div class="section-title">Teams, compared fairly<span class="rule"></span><span class="hint">not a ranking — a small team's one bad run should not read as a real signal</span></div>
+    <div class="card">
+      <div class="card-label">Success rate vs. run count, last 30 days</div>
+      <svg viewBox="0 0 600 250" style="width:100%;height:auto;max-width:640px">
+        <polygon points="85,40 115,40 183,49.5 296,63.75 560,73.25 560,92.25 296,101.75 183,116 115,144.5 85,206.25" fill="#E8EDF6" stroke="#C7D3E8"/>
+        <line x1="70" y1="230" x2="560" y2="230" stroke="#B7BFC6"/>
+        <line x1="70" y1="40" x2="70" y2="230" stroke="#B7BFC6"/>
+        <text x="70" y="245" font-size="10.5" fill="#8D959C">0</text>
+        <text x="217" y="245" font-size="10.5" fill="#8D959C">300 runs</text>
+        <text x="364" y="245" font-size="10.5" fill="#8D959C">600 runs</text>
+        <text x="511" y="245" font-size="10.5" fill="#8D959C">900</text>
+        <text x="30" y="44" font-size="10.5" fill="#8D959C">100%</text>
+        <text x="30" y="135" font-size="10.5" fill="#8D959C">80%</text>
+        <text x="30" y="234" font-size="10.5" fill="#8D959C">60%</text>
+        <circle cx="99.4" cy="40" r="5" fill="#5B6570"/><text x="106.4" y="36" font-size="11" fill="#1C2126">Comet (60)</text>
+        <circle cx="128.8" cy="59" r="5" fill="#5B6570"/><text x="135.8" y="55" font-size="11" fill="#1C2126">Lighthouse (120)</text>
+        <circle cx="114.1" cy="111.3" r="5" fill="#5B6570"/><text x="121.1" y="107.3" font-size="11" fill="#1C2126">Pinnacle (90)</text>
+        <circle cx="190.1" cy="78" r="5" fill="#5B6570"/><text x="197.1" y="74" font-size="11" fill="#1C2126">Beacon (245)</text>
+        <circle cx="248.9" cy="68.5" r="5" fill="#5B6570"/><text x="255.9" y="64.5" font-size="11" fill="#1C2126">Foundry (365)</text>
+        <circle cx="290.5" cy="97" r="5" fill="#5B6570"/><text x="297.5" y="93" font-size="11" fill="#1C2126">Atlas (450)</text>
+        <circle cx="535.5" cy="82.75" r="5" fill="#5B6570"/><text x="465" y="78" font-size="11" fill="#1C2126">Anchor (950)</text>
+        <circle cx="238.1" cy="140" r="6" fill="#B3261E"/><text x="245.1" y="144" font-size="11" fill="#B3261E">Nova (343) — below expected range</text>
+      </svg>
+      <div class="caption">The band is the range luck alone would produce, given each team's run count. Only Nova falls outside it — that's the one worth a look, not the lowest raw number.</div>
+    </div>
+  </div>
+
+  <!-- SPEED -->
+  <div class="section">
+    <div class="section-title">Speed<span class="rule"></span></div>
+    <div class="card">
+      <table>
+        <thead><tr><th>Metric</th><th>p50</th><th>p95</th><th>p99</th></tr></thead>
+        <tbody>
+          <tr><td>Turn time — one model reply</td><td class="num">2.1s</td><td class="num">6.8s</td><td class="num">14.2s</td></tr>
+          <tr><td>Run time — whole task, finished runs</td><td class="num">3m 40s</td><td class="num">18m 10s</td><td class="num">41m 5s</td></tr>
+        </tbody>
+      </table>
+      <div class="caption">62 runs timed out — kept out of the numbers above, so cut-off runs can't look like "getting faster."</div>
+    </div>
+  </div>
+
+  <!-- FLAGS -->
+  <div class="section">
+    <div class="section-title">Rules — an agent tried something it shouldn't<span class="rule"></span></div>
+    <div class="card">
+      <div class="stat-note" style="font-size:13px;margin-bottom:12px">🔴 2 &nbsp;·&nbsp; 🟠 3 &nbsp;·&nbsp; ⚪ 29</div>
+      <table>
+        <thead><tr><th></th><th>Flag</th><th>Team</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr>
+            <td style="text-align:center;font-size:14px">🟠</td>
+            <td><b>Tried a blocked domain</b><div class="stat-note" style="margin-top:2px">new here, 3× this week</div></td>
+            <td>Foundry</td>
+            <td>investigating</td>
+          </tr>
+          <tr>
+            <td style="text-align:center;font-size:14px">🔴</td>
+            <td><b>Secret showed up somewhere it shouldn't</b><div class="stat-note" style="margin-top:2px">new this month, 1 occurrence</div></td>
+            <td>Nova</td>
+            <td>confirmed</td>
+          </tr>
+          <tr>
+            <td style="text-align:center;font-size:14px">🟠</td>
+            <td><b>Asked for more access than needed</b><div class="stat-note" style="margin-top:2px">new this month, 2 occurrences</div></td>
+            <td>Beacon</td>
+            <td>dismissed (expected)</td>
+          </tr>
+          <tr>
+            <td style="text-align:center;font-size:14px">⚪</td>
+            <td><b>Suspected prompt injection</b><div class="stat-note" style="margin-top:2px">steady background rate, 46 this month</div></td>
+            <td>Anchor</td>
+            <td>dismissed (expected)</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="caption">Ranked by new-for-this-team, not by count.</div>
+    </div>
+  </div>
+
+  <!-- STATES -->
+  <div class="section">
+    <div class="section-title">Other states<span class="rule"></span></div>
+    <div class="states-strip">
+      <div class="state-box">
+        <h4>Loading</h4>
+        <div class="skeleton w60"></div><div class="skeleton w80"></div><div class="skeleton" style="width:40%"></div>
+        <div class="stat-note">Cards keep their size while loading — nothing jumps once numbers arrive.</div>
+      </div>
+      <div class="state-box">
+        <h4>Empty — new org, no runs yet</h4>
+        <div class="stat-note">"No runs yet. Once engineers start using it, this page fills in — check back after day one."</div>
+      </div>
+      <div class="state-box">
+        <h4>Error — data didn't load</h4>
+        <div class="stat-note">"Couldn't load this section. <span style="color:var(--accent)">Retry</span> — the rest of the page still works."</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot-note">Wireframe for layout only — numbers are believable examples, not real data. See docs/ui.md for the full spec.</div>
+</div>
+</body>
+</html>

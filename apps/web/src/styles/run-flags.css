@@ -1,0 +1,107 @@
+/*
+ * Run page only: placing a rule flag on the specific turn that tripped it, alongside the
+ * existing run-level "Rules" card. Its own file, not global.css, since this is one page's
+ * concern -- imported directly from RunPage.tsx.
+ *
+ * Severity colour follows docs/ui.md's colour rules exactly: red is reserved for what someone
+ * must act on now, so only a high-severity flag gets it here. Medium gets amber, the "worth
+ * watching" colour. Low gets the same muted, ordinary treatment as everything else on this page
+ * -- no colour at all, just a neutral edge so it's still findable while scanning. None of these
+ * rely on colour alone: every flagged turn also carries the 🚩 and a 🔴/🟠/⚪ severity mark in its
+ * own row (docs/ui.md's emoji vocabulary), so the distinction still reads for a colour-blind
+ * reader or in a quick greyscale glance.
+ */
+
+tr.turn-flagged-high td:first-child {
+  border-left: 3px solid var(--bad);
+}
+
+tr.turn-flagged-high {
+  background: var(--bad-soft);
+}
+
+tr.turn-flagged-medium td:first-child {
+  border-left: 3px solid var(--warn);
+}
+
+tr.turn-flagged-medium {
+  background: var(--warn-soft);
+}
+
+tr.turn-flagged-low td:first-child {
+  border-left: 3px solid var(--border-strong);
+}
+
+/* The 🚩 + severity mark riding next to "Turn N" in the "What happened" column. */
+.turn-flag-mark {
+  margin-left: 8px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+/* One line per flag, placed after that turn's tool calls (so a reader sees what the agent tried
+   before seeing which of those acts tripped the rule) -- the same one-line-per-step treatment
+   `.tool-calls` already uses for tool calls themselves. */
+.turn-flag-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 7px 0 9px;
+  border-top: 1px solid var(--border);
+  margin-top: 2px;
+}
+
+.turn-flag-line {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  font-size: 12px;
+  flex-wrap: wrap;
+}
+
+.turn-flag-line .tfl-kind {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.turn-flag-line.severity-high .tfl-kind {
+  color: var(--bad);
+}
+
+.turn-flag-line.severity-medium .tfl-kind {
+  color: var(--warn);
+}
+
+.turn-flag-line .tfl-detail {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+}
+
+.turn-flag-line .tfl-status {
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+
+/* Run-level "Rules" card: an entry for a flag also shown on a turn links back to it, so the same
+   flag reads as one thing in two places, not two flags. */
+.flag-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 7px 0;
+}
+
+.flag-row + .flag-row {
+  border-top: 1px solid var(--border);
+}
+
+.flag-row .fdesc {
+  min-width: 0;
+}
+
+.flag-row .fmeta {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+}

@@ -1,0 +1,114 @@
+/*
+ * Design tokens. Light palette lives on :root. Dark redefines the same names twice, per the
+ * artifact-authoring rule this codebase borrows for every themable surface: once for
+ * "system prefers dark" and once for an explicit [data-theme="dark"], so a manual toggle always
+ * wins over the OS setting. Semantic colours (good/warn/bad) keep the same meaning and roughly
+ * the same perceived brightness in both modes -- see docs/ui.md's "Dark mode" section.
+ *
+ * Status colours (--good/--warn/--bad) are reserved and always shown with an icon or word next
+ * to them (docs/ui.md's emoji vocabulary) -- never colour alone. That pairing is what lets amber
+ * and grey sit close in hue without a colour-blind reader losing the distinction.
+ */
+:root {
+  --bg: #f3f5f7;
+  --surface: #ffffff;
+  --surface-2: #f7f8fa;
+  --border: #dadfe3;
+  --border-strong: #b7bfc6;
+  --ink: #1c2126;
+  --ink-soft: #5b6570;
+  --ink-faint: #8d959c;
+
+  --accent: #3a5a9b;
+  --accent-soft: #e8edf6;
+  --accent-border: #c7d3e8;
+
+  --good: #2e7d46;
+  --good-soft: #e4f3e8;
+  --warn: #8a5e00;
+  --warn-soft: #fbf0d9;
+  --bad: #b3261e;
+  --bad-soft: #fbe7e5;
+
+  /* One hue, monotone lightness -- used for anything that decomposes a single whole into ordered
+     parts (use-depth buckets, token types). See docs/ui.md: "No colour carries rank" -- the scale
+     reflects reading order, never a judgement. */
+  --scale-1: #3a5a9b;
+  --scale-2: #7c97c4;
+  --scale-3: #bfcbe2;
+  --scale-4: #b7bfc6;
+
+  /* Fixed identity colours for the three failure-blame groups, matching the reviewed wireframes.
+     Unordered categories (org setup / platform / task aren't ranked against each other), each
+     always paired with its emoji (🔒 ⚙️ 🧩), so colour is never the only channel carrying it. */
+  --blame-org: #8a5e00;
+  --blame-platform: #3a5a9b;
+  --blame-task: #8d959c;
+
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15181c;
+    --surface: #1b1f25;
+    --surface-2: #20252b;
+    --border: #2b3038;
+    --border-strong: #3c434d;
+    --ink: #eceef0;
+    --ink-soft: #a8b0b8;
+    --ink-faint: #7a828b;
+
+    --accent: #7fa3de;
+    --accent-soft: #202a3a;
+    --accent-border: #35496b;
+
+    --good: #5fbe7e;
+    --good-soft: #1c3324;
+    --warn: #e0a83d;
+    --warn-soft: #3a2f14;
+    --bad: #f2897f;
+    --bad-soft: #3a2220;
+
+    --scale-1: #7fa3de;
+    --scale-2: #5c76a0;
+    --scale-3: #454f60;
+    --scale-4: #3c434d;
+
+    --blame-org: #e0a83d;
+    --blame-platform: #7fa3de;
+    --blame-task: #a8b0b8;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #15181c;
+  --surface: #1b1f25;
+  --surface-2: #20252b;
+  --border: #2b3038;
+  --border-strong: #3c434d;
+  --ink: #eceef0;
+  --ink-soft: #a8b0b8;
+  --ink-faint: #7a828b;
+
+  --accent: #7fa3de;
+  --accent-soft: #202a3a;
+  --accent-border: #35496b;
+
+  --good: #5fbe7e;
+  --good-soft: #1c3324;
+  --warn: #e0a83d;
+  --warn-soft: #3a2f14;
+  --bad: #f2897f;
+  --bad-soft: #3a2220;
+
+  --scale-1: #7fa3de;
+  --scale-2: #5c76a0;
+  --scale-3: #454f60;
+  --scale-4: #3c434d;
+
+  --blame-org: #e0a83d;
+  --blame-platform: #7fa3de;
+  --blame-task: #a8b0b8;
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard wireframes</title>
+<style>
+:root{
+  --bg:#F3F5F7; --surface:#FFFFFF;
+  --border:#DADFE3; --border-strong:#B7BFC6;
+  --ink:#1C2126; --ink-soft:#5B6570; --ink-faint:#8D959C;
+  --accent:#3A5A9B; --accent-soft:#E8EDF6;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5}
+.ribbon{background:#2A2E33;color:#fff;text-align:center;font-size:11px;letter-spacing:.04em;padding:5px;text-transform:uppercase}
+.shell{max-width:920px;margin:0 auto;padding:50px 24px 60px}
+h1{font-size:26px;margin:0 0 6px}
+.lede{color:var(--ink-soft);font-size:15px;max-width:640px;margin:0 0 34px}
+.levels{display:flex;align-items:center;gap:8px;margin-bottom:40px;font-size:13px;color:var(--ink-soft);flex-wrap:wrap}
+.levels .arrow{color:var(--ink-faint)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{display:block;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px 22px;text-decoration:none;color:inherit;transition:border-color .1s}
+.card:hover{border-color:var(--accent)}
+.card .tag{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--accent);font-weight:700;margin-bottom:8px}
+.card h2{font-size:17px;margin:0 0 6px}
+.card p{margin:0;color:var(--ink-soft);font-size:13px}
+.foot-note{margin-top:50px;font-size:11px;color:var(--ink-faint);text-align:center}
+</style>
+</head>
+<body>
+<div class="ribbon">Wireframe — example data, not live</div>
+<div class="shell">
+  <h1>Agent dashboard — wireframes</h1>
+  <p class="lede">Four screens, one drill path — Org down to a single Run. Plain HTML, example numbers, opens straight from disk. No date picker here: this page is just a table of contents.</p>
+
+  <div class="levels">
+    <span>🏢 Org</span>
+    <span class="arrow">→</span>
+    <span>👥 Team</span>
+    <span class="arrow">→</span>
+    <span>👤 Engineer</span>
+    <span class="arrow">→</span>
+    <span>🔎 Run</span>
+  </div>
+
+  <div class="cards">
+    <a class="card" href="org.html">
+      <div class="tag">🏢 Level 1 · Org</div>
+      <h2>Org overview</h2>
+      <p>Is this paying for itself, and is anything going wrong I can't see?</p>
+    </a>
+    <a class="card" href="team.html">
+      <div class="tag">👥 Level 2 · Team</div>
+      <h2>Team: Nova</h2>
+      <p>Is my team getting value, is anything stuck or breaking, am I about to blow my budget?</p>
+    </a>
+    <a class="card" href="engineer.html">
+      <div class="tag">👤 Level 3 · Engineer</div>
+      <h2>Priya Nair</h2>
+      <p>Is this helping me?</p>
+    </a>
+    <a class="card" href="run.html">
+      <div class="tag">🔎 Level 4 · Run</div>
+      <h2>Run #4821</h2>
+      <p>What actually happened?</p>
+    </a>
+  </div>
+
+  <div class="foot-note">See docs/ui.md for the full spec behind these screens.</div>
+</div>
+</body>
+</html>

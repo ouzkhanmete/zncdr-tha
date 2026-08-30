@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Team page — wireframe</title>
+<style>
+:root{
+  --bg:#F3F5F7; --surface:#FFFFFF; --surface-2:#F7F8FA;
+  --border:#DADFE3; --border-strong:#B7BFC6;
+  --ink:#1C2126; --ink-soft:#5B6570; --ink-faint:#8D959C;
+  --accent:#3A5A9B; --accent-soft:#E8EDF6;
+  --good:#2E7D46; --good-soft:#E4F3E8;
+  --warn:#8A5E00; --warn-soft:#FBF0D9;
+  --bad:#B3261E; --bad-soft:#FBE7E5;
+  --mono:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:14px;line-height:1.45}
+.ribbon{background:#2A2E33;color:#fff;text-align:center;font-size:11px;letter-spacing:.04em;padding:5px;text-transform:uppercase}
+.shell{max-width:1180px;margin:0 auto;padding:0 24px 60px}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid var(--border);margin-bottom:22px;flex-wrap:wrap;gap:10px}
+.crumb{font-size:13px;color:var(--ink-soft)}
+.crumb a{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent}
+.crumb a:hover{border-bottom-color:var(--accent)}
+.crumb .sep{margin:0 6px;color:var(--ink-faint)}
+.crumb .current{color:var(--ink);font-weight:600}
+.nav-links{font-size:12px;display:flex;gap:14px}
+.nav-links a{color:var(--ink-soft);text-decoration:none;padding:4px 0;border-bottom:2px solid transparent}
+.nav-links a.active{color:var(--ink);border-bottom-color:var(--accent);font-weight:600}
+.nav-links a:hover{color:var(--ink)}
+.page-head{margin-bottom:24px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.page-head h1{font-size:22px;margin:0 0 4px}
+.page-head p{margin:0;color:var(--ink-soft);font-size:14px;max-width:560px}
+.window-ctrl{font-size:12px;color:var(--ink-soft);border:1px solid var(--border);border-radius:5px;padding:7px 12px;background:var(--surface);white-space:nowrap}
+.window-ctrl b{color:var(--ink)}
+.daterange{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:5px 8px;flex-wrap:wrap}
+.daterange .preset{font-family:var(--sans);font-size:11.5px;color:var(--ink-soft);background:transparent;border:1px solid transparent;border-radius:4px;padding:3px 9px;cursor:pointer}
+.daterange .preset:hover{background:var(--surface-2);color:var(--ink)}
+.daterange .preset.active{background:var(--accent-soft);color:var(--accent);border-color:#C3D0E6;font-weight:700}
+.daterange .dr-sep{width:1px;height:18px;background:var(--border);margin:0 3px}
+.daterange input[type=date]{font-family:var(--mono);font-size:12px;color:var(--ink);border:1px solid var(--border);border-radius:4px;padding:3px 6px;background:var(--surface)}
+.daterange .dr-arrow{color:var(--ink-faint);font-size:12px}
+.daterange .dr-note{font-size:11px;color:var(--ink-faint);width:100%;padding-top:2px}
+.section{margin-bottom:32px}
+.section-title{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);font-weight:700;margin:0 0 12px;display:flex;align-items:center;gap:10px}
+.section-title .rule{flex:1;height:1px;background:var(--border)}
+.section-title .hint{text-transform:none;font-weight:400;letter-spacing:0;color:var(--ink-faint);font-size:11.5px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:1fr 1fr 1fr}
+.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:16px 18px}
+.card-label{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);font-weight:700;margin-bottom:8px}
+.stat{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:29px;font-weight:700;color:var(--ink);line-height:1}
+.stat.md{font-size:21px}
+.stat.sm{font-size:16px}
+.stat-note{font-size:12px;color:var(--ink-soft);margin-top:5px}
+.pair{display:flex;gap:0}
+.pair>div{flex:1;padding-right:16px}
+.pair>div+div{padding-left:16px;border-left:1px solid var(--border)}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap}
+.pill-good{background:var(--good-soft);color:var(--good)}
+.pill-warn{background:var(--warn-soft);color:var(--warn)}
+.pill-bad{background:var(--bad-soft);color:var(--bad)}
+.pill-neutral{background:var(--surface-2);color:var(--ink-soft);border:1px solid var(--border)}
+.spark{display:flex;align-items:flex-end;gap:3px;height:34px;margin-top:9px}
+.spark i{display:block;width:7px;background:var(--border-strong);border-radius:1px;font-style:normal}
+.spark i.now{background:var(--accent)}
+.spark i.bad{background:var(--bad)}
+.bar-track{position:relative;height:16px;background:var(--surface-2);border:1px solid var(--border);border-radius:4px}
+.bar-fill{position:absolute;top:0;left:0;bottom:0;border-radius:3px 0 0 3px}
+.bar-mark{position:absolute;top:-6px;bottom:-6px;width:0;border-left:2px dashed var(--ink-faint)}
+.bar-mark.stop{border-left:2px solid var(--bad)}
+.bar-mark.warn{border-left:2px solid var(--warn)}
+.bar-mark .mlabel{position:absolute;top:-16px;font-size:10px;color:var(--ink-soft);transform:translateX(-50%);white-space:nowrap}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);font-weight:700;padding:8px 10px;border-bottom:1px solid var(--border-strong)}
+td{padding:9px 10px;border-bottom:1px solid var(--border)}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right}
+td.sev{text-align:center;font-size:15px;width:36px}
+tr:last-child td{border-bottom:none}
+.fail-groups{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.fail-group h4{margin:0 0 3px;font-size:13px}
+.fail-group .fg-total{font-family:var(--mono);font-size:20px;font-weight:700}
+.fail-group .fg-sub{font-size:11.5px;color:var(--ink-soft);margin-bottom:10px}
+.fail-row{display:flex;justify-content:space-between;font-size:12.5px;padding:5px 0;border-top:1px solid var(--border)}
+.fail-row span.n{font-family:var(--mono);color:var(--ink-soft)}
+.fail-row.standout{color:var(--warn);font-weight:600}
+.fg-org{border-top:3px solid var(--warn)}
+.fg-platform{border-top:3px solid var(--accent)}
+.fg-task{border-top:3px solid var(--ink-faint)}
+.fg-org,.fg-platform,.fg-task{padding-top:10px}
+.flag-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--border)}
+.flag-row:first-child{border-top:none}
+.flag-row .fdesc{flex:1}
+.flag-row .fdesc b{font-size:13px}
+.flag-row .fdesc .fmeta{font-size:11.5px;color:var(--ink-soft);margin-top:2px}
+.roster{display:flex;flex-wrap:wrap;gap:8px 22px}
+.roster a{color:var(--accent);text-decoration:none;font-size:13.5px}
+.roster a:hover{text-decoration:underline}
+.states-strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:44px}
+.state-box{border:1px dashed var(--border-strong);border-radius:6px;padding:14px;background:var(--surface-2)}
+.state-box h4{margin:0 0 9px;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft)}
+.skeleton{height:10px;background:var(--border);border-radius:3px;margin-bottom:7px}
+.skeleton.w60{width:60%}
+.skeleton.w80{width:80%}
+.foot-note{margin-top:50px;font-size:11px;color:var(--ink-faint);text-align:center}
+.range{position:relative;height:44px;margin-top:14px}
+.range .line{position:absolute;top:22px;left:6px;right:6px;height:2px;background:var(--border-strong)}
+.range .dot{position:absolute;top:16px;width:12px;height:12px;border-radius:50%;transform:translateX(-50%)}
+.range .dot.median{background:var(--accent);width:16px;height:16px;top:14px;z-index:2}
+.range .dot.avgd{background:var(--ink-soft)}
+.range .dot.worst{background:var(--bad)}
+.range .rlabel{position:absolute;top:-6px;font-size:11px;color:var(--ink-soft);transform:translateX(-50%);white-space:nowrap;text-align:center}
+.range .rlabel b{display:block;font-family:var(--mono);color:var(--ink);font-size:12.5px}
+.callout{border-radius:6px;padding:12px 16px;font-size:13px;margin-top:12px}
+.callout.bad{background:var(--bad-soft);color:var(--bad)}
+.chart-svg{display:block;width:100%;height:auto}
+.mini-pair{display:flex;gap:0}
+.mini-pair>div{flex:1;padding-right:18px}
+.mini-pair>div+div{padding-left:18px;border-left:1px solid var(--border)}
+.mini-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:2px}
+.mini-head .mv{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:19px;font-weight:700;color:var(--ink);white-space:nowrap}
+.mini-head .ml{font-size:11px;color:var(--ink-soft);text-align:right}
+.sev-key{font-size:11px;color:var(--ink-faint);margin-bottom:8px}
+</style>
+</head>
+<body>
+<div class="ribbon">Wireframe — example data, not live</div>
+<div class="shell">
+
+  <div class="topbar">
+    <div class="crumb"><a href="org.html">Org</a><span class="sep">/</span><span class="current">Team: Nova</span></div>
+    <div class="nav-links">
+      <a href="org.html">Org</a>
+      <a class="active" href="team.html">Team</a>
+      <a href="engineer.html">Engineer</a>
+      <a href="run.html">Run</a>
+      <a href="index.html" style="margin-left:8px;color:var(--ink-faint)">index ↩</a>
+    </div>
+  </div>
+
+  <div class="page-head">
+    <div>
+      <h1>Team: Nova</h1>
+      <p>Is my team getting value, is anything stuck or breaking, am I about to blow my budget?</p>
+    </div>
+    <div class="daterange">
+      <button class="preset active">7d</button>
+      <button class="preset">30d</button>
+      <button class="preset">90d</button>
+      <span class="dr-sep"></span>
+      <input type="date" value="2026-08-23" aria-label="From">
+      <span class="dr-arrow">&rarr;</span>
+      <input type="date" value="2026-08-29" aria-label="To">
+      <span class="dr-note">Days run midnight to midnight UTC</span>
+    </div>
+  </div>
+
+  <!-- BUDGET -->
+  <div class="section">
+    <div class="section-title">💰 Budget<span class="rule"></span><span class="hint">the one thing on this page a manager can act on today</span></div>
+    <div class="card">
+      <div class="card-label">Spend this month against the team's limit</div>
+      <div class="stat">$2,070 <span style="font-size:15px;color:var(--ink-soft);font-weight:400">/ $1,800 · 115% used</span></div>
+      <svg class="chart-svg" viewBox="0 0 1100 220" role="img" aria-label="Cumulative spend by day of month, with warning line at 80%, stop line at 100%, a dashed marker for today, and a projected line to month end">
+        <line x1="60" y1="190" x2="1070" y2="190" stroke="var(--border-strong)" stroke-width="1"/>
+        <line x1="60" y1="105.00" x2="1070" y2="105.00" stroke="var(--bad)" stroke-width="1.5"/>
+        <text x="1068" y="99" font-size="11" fill="var(--bad)" text-anchor="end">🛑 stop · $1,800</text>
+        <line x1="60" y1="122.00" x2="1070" y2="122.00" stroke="var(--warn)" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <text x="466" y="118.6" font-size="11" fill="var(--warn)" text-anchor="end">⚠️ warning · $1,440</text>
+        <line x1="666" y1="20" x2="666" y2="190" stroke="var(--ink-faint)" stroke-width="1.5" stroke-dasharray="3 3"/>
+        <text x="666" y="14" font-size="11" fill="var(--ink-soft)" text-anchor="middle">today · day 18 of 30</text>
+        <polyline points="60,190 127.33,184.33 194.67,177.72 262,170.64 329.33,162.61 396.67,154.11 464,145.14 531.33,105.00 598.67,96.97 666,92.25" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+        <line x1="666" y1="92.25" x2="1070" y2="27.08" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="6 4" opacity="0.75"/>
+        <circle cx="531.33" cy="105.00" r="4" fill="var(--bad)"/>
+        <text x="531.33" y="124" font-size="10.5" fill="var(--bad)" text-anchor="middle">crossed stop line, day 14</text>
+        <circle cx="666" cy="92.25" r="4.5" fill="var(--accent)"/>
+        <text x="678" y="88.6" font-size="11.5" fill="var(--ink)" font-weight="700">$2,070</text>
+        <text x="1068" y="20" font-size="12.5" fill="var(--bad)" font-weight="700" text-anchor="end">projected $3,450 by day 30</text>
+        <text x="60" y="208" font-size="10.5" fill="var(--ink-faint)">day 1</text>
+        <text x="396.67" y="208" font-size="10.5" fill="var(--ink-faint)" text-anchor="middle">day 10</text>
+        <text x="733.33" y="208" font-size="10.5" fill="var(--ink-faint)" text-anchor="middle">day 20</text>
+        <text x="1070" y="208" font-size="10.5" fill="var(--ink-faint)" text-anchor="end">day 30</text>
+      </svg>
+      <div class="stat-note">Percent-used alone can't tell day 10 from day 28 apart. The pace line can — and this one is already past the stop line before the month is.</div>
+    </div>
+  </div>
+
+  <!-- OUTCOME -->
+  <div class="section">
+    <div class="section-title">Outcome, this week<span class="rule"></span></div>
+    <div class="grid g2">
+      <div class="card">
+        <div class="card-label">Runs — next to success rate, always</div>
+        <div class="mini-pair">
+          <div>
+            <div class="mini-head"><span class="mv">80</span><span class="ml">runs this week</span></div>
+            <svg class="chart-svg" viewBox="0 0 400 100" role="img" aria-label="Runs per day this week">
+              <line x1="10" y1="80" x2="390" y2="80" stroke="var(--border)" stroke-width="1"/>
+              <polyline points="10,19.55 73.33,17.64 136.67,15.09 200,22.73 263.33,24.01 326.67,34.18 390,37.36" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+              <circle cx="390" cy="37.36" r="3.5" fill="var(--accent)"/>
+              <text x="10" y="94" font-size="9.5" fill="var(--ink-faint)">Mon</text>
+              <text x="390" y="94" font-size="9.5" fill="var(--ink-faint)" text-anchor="end">Sun</text>
+            </svg>
+          </div>
+          <div>
+            <div class="mini-head"><span class="mv">82% <span style="font-weight:400;color:var(--ink-soft);font-size:13px">→ 93%</span></span><span class="ml">first try → in the end</span></div>
+            <svg class="chart-svg" viewBox="0 0 400 100" role="img" aria-label="Success rate per day this week, first try and in the end">
+              <line x1="10" y1="80" x2="390" y2="80" stroke="var(--border)" stroke-width="1"/>
+              <polyline points="10,56.67 73.33,54.33 136.67,49.67 200,52 263.33,47.33 326.67,59 390,49.67" fill="none" stroke="var(--ink-faint)" stroke-width="2" stroke-dasharray="4 3"/>
+              <polyline points="10,31 73.33,28.67 136.67,24 200,26.33 263.33,21.67 326.67,33.33 390,24" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+              <text x="10" y="94" font-size="9.5" fill="var(--ink-faint)">Mon</text>
+              <text x="390" y="94" font-size="9.5" fill="var(--ink-faint)" text-anchor="end">Sun</text>
+            </svg>
+          </div>
+        </div>
+        <div class="stat-note">A rate only means something with its run count attached — this one is built on 80 runs, not a handful.</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Finished tasks — next to rework, always</div>
+        <div class="mini-pair">
+          <div>
+            <div class="mini-head"><span class="mv">52</span><span class="ml">finished this week</span></div>
+            <svg class="chart-svg" viewBox="0 0 400 100" role="img" aria-label="Finished tasks per day this week">
+              <line x1="10" y1="80" x2="390" y2="80" stroke="var(--border)" stroke-width="1"/>
+              <polyline points="10,24 73.33,19.33 136.67,21.67 200,26.33 263.33,17 326.67,40.33 390,42.67" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+              <circle cx="390" cy="42.67" r="3.5" fill="var(--accent)"/>
+              <text x="10" y="94" font-size="9.5" fill="var(--ink-faint)">Mon</text>
+              <text x="390" y="94" font-size="9.5" fill="var(--ink-faint)" text-anchor="end">Sun</text>
+            </svg>
+          </div>
+          <div>
+            <div class="mini-head"><span class="mv">4.8%</span><span class="ml">rework · org avg 6.4%</span></div>
+            <svg class="chart-svg" viewBox="0 0 400 100" role="img" aria-label="Rework rate per day this week, against the org average">
+              <line x1="10" y1="80" x2="390" y2="80" stroke="var(--border)" stroke-width="1"/>
+              <line x1="10" y1="16" x2="390" y2="16" stroke="var(--ink-faint)" stroke-width="1.5" stroke-dasharray="4 3"/>
+              <text x="390" y="12" font-size="9" fill="var(--ink-faint)" text-anchor="end">org avg 6.4%</text>
+              <polyline points="10,28 73.33,35 136.67,30 200,31 263.33,37 326.67,25 390,39" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+              <circle cx="390" cy="39" r="3.5" fill="var(--accent)"/>
+              <text x="10" y="94" font-size="9.5" fill="var(--ink-faint)">Mon</text>
+              <text x="390" y="94" font-size="9.5" fill="var(--ink-faint)" text-anchor="end">Sun</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MONEY -->
+  <div class="section">
+    <div class="section-title">Cost<span class="rule"></span></div>
+    <div class="card">
+      <div class="card-label">Cost per finished task — median leads, one runaway run can't drag it</div>
+      <div class="range">
+        <div class="line"></div>
+        <div class="rlabel" style="left:9%"><b>$4.35</b>Median</div>
+        <div class="dot median" style="left:9%"></div>
+        <div class="rlabel" style="left:21%"><b>$7.90</b>Average</div>
+        <div class="dot avgd" style="left:21%"></div>
+        <div class="rlabel" style="left:92%"><b>$155</b>Worst case</div>
+        <div class="dot worst" style="left:92%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RELIABILITY -->
+  <div class="section">
+    <div class="section-title">What broke, and whose problem it is<span class="rule"></span><span class="hint">this afternoon's fix list</span></div>
+    <div class="card">
+      <svg class="chart-svg" viewBox="0 0 1100 340" role="img" aria-label="Failure rate by cause, grouped by org setup, platform, and task">
+        <line x1="220" y1="20" x2="220" y2="320" stroke="var(--border)" stroke-width="1"/>
+        <line x1="408.9" y1="20" x2="408.9" y2="320" stroke="var(--border)" stroke-width="1"/>
+        <line x1="597.8" y1="20" x2="597.8" y2="320" stroke="var(--border)" stroke-width="1"/>
+        <line x1="786.7" y1="20" x2="786.7" y2="320" stroke="var(--border)" stroke-width="1"/>
+        <line x1="975.6" y1="20" x2="975.6" y2="320" stroke="var(--border)" stroke-width="1"/>
+        <text x="220" y="332" font-size="10" fill="var(--ink-faint)" text-anchor="middle">0%</text>
+        <text x="408.9" y="332" font-size="10" fill="var(--ink-faint)" text-anchor="middle">2%</text>
+        <text x="597.8" y="332" font-size="10" fill="var(--ink-faint)" text-anchor="middle">4%</text>
+        <text x="786.7" y="332" font-size="10" fill="var(--ink-faint)" text-anchor="middle">6%</text>
+        <text x="975.6" y="332" font-size="10" fill="var(--ink-faint)" text-anchor="middle">8%</text>
+
+        <text x="210" y="38" font-size="12.5" fill="var(--ink)" text-anchor="end" font-weight="700">🔒 Org setup</text>
+        <rect x="220" y="26" width="774.4" height="16" fill="var(--warn)"/>
+        <text x="1000" y="38" font-size="11.5" fill="var(--ink)" font-family="var(--mono)">8.2% · org avg 6.1%</text>
+        <line x1="796.1" y1="24" x2="796.1" y2="44" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="2 2"/>
+
+        <text x="210" y="62" font-size="11.5" fill="var(--ink-soft)" text-anchor="end" font-weight="700">Missing secret or login</text>
+        <rect x="220" y="50" width="481.6" height="16" fill="var(--warn)" opacity="0.85"/>
+        <text x="708" y="62" font-size="11" fill="var(--warn)" font-family="var(--mono)" font-weight="700">5.1%</text>
+
+        <text x="210" y="86" font-size="11.5" fill="var(--ink-soft)" text-anchor="end">Missing permission</text>
+        <rect x="220" y="74" width="188.9" height="16" fill="var(--warn)" opacity="0.45"/>
+        <text x="415" y="86" font-size="11" fill="var(--ink-soft)" font-family="var(--mono)">2.0%</text>
+
+        <text x="210" y="110" font-size="11.5" fill="var(--ink-soft)" text-anchor="end">Tool not available</text>
+        <rect x="220" y="98" width="103.9" height="16" fill="var(--warn)" opacity="0.45"/>
+        <text x="330" y="110" font-size="11" fill="var(--ink-soft)" font-family="var(--mono)">1.1%</text>
+
+        <text x="210" y="150" font-size="12.5" fill="var(--ink)" text-anchor="end" font-weight="700">⚙️ Platform</text>
+        <rect x="220" y="138" width="188.9" height="16" fill="var(--accent)"/>
+        <text x="1000" y="150" font-size="11.5" fill="var(--ink)" font-family="var(--mono)">2.0% · in line with org</text>
+
+        <text x="210" y="174" font-size="11.5" fill="var(--ink-soft)" text-anchor="end">Infrastructure crash</text>
+        <rect x="220" y="162" width="113.3" height="16" fill="var(--accent)" opacity="0.45"/>
+        <text x="340" y="174" font-size="11" fill="var(--ink-soft)" font-family="var(--mono)">1.2%</text>
+
+        <text x="210" y="198" font-size="11.5" fill="var(--ink-soft)" text-anchor="end">Rate limited</text>
+        <rect x="220" y="186" width="75.6" height="16" fill="var(--accent)" opacity="0.45"/>
+        <text x="302" y="198" font-size="11" fill="var(--ink-soft)" font-family="var(--mono)">0.8%</text>
+
+        <text x="210" y="238" font-size="12.5" fill="var(--ink)" text-anchor="end" font-weight="700">🧩 Task</text>
+        <rect x="220" y="226" width="462.8" height="16" fill="var(--ink-faint)"/>
+        <text x="1000" y="238" font-size="11.5" fill="var(--ink)" font-family="var(--mono)">4.9% · in line with org</text>
+
+        <text x="210" y="262" font-size="11.5" fill="var(--ink-soft)" text-anchor="end">Tests failed</text>
+        <rect x="220" y="250" width="245.6" height="16" fill="var(--ink-faint)" opacity="0.5"/>
+        <text x="472" y="262" font-size="11" fill="var(--ink-soft)" font-family="var(--mono)">2.6%</text>
+
+        <text x="210" y="286" font-size="11.5" fill="var(--ink-soft)" text-anchor="end">Nothing useful produced</text>
+        <rect x="220" y="274" width="122.8" height="16" fill="var(--ink-faint)" opacity="0.5"/>
+        <text x="349" y="286" font-size="11" fill="var(--ink-soft)" font-family="var(--mono)">1.3%</text>
+
+        <text x="210" y="310" font-size="11.5" fill="var(--ink-soft)" text-anchor="end">Dependency install failed</text>
+        <rect x="220" y="298" width="94.4" height="16" fill="var(--ink-faint)" opacity="0.5"/>
+        <text x="321" y="310" font-size="11" fill="var(--ink-soft)" font-family="var(--mono)">1.0%</text>
+      </svg>
+      <div class="stat-note">Nearly all of this team's org-setup failures trace to one missing secret — handing the agent that credential would close most of this group.</div>
+    </div>
+  </div>
+
+  <!-- FLAGS -->
+  <div class="section">
+    <div class="section-title">Rules, this team<span class="rule"></span><span class="hint">newest kind first, not highest count</span></div>
+    <div class="card">
+      <div class="sev-key">🔴 high &nbsp; 🟠 medium &nbsp; ⚪ low</div>
+      <table>
+        <thead><tr><th style="width:36px"></th><th>Flag</th><th>Detail</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="sev">🟠</td>
+            <td><b>Tried a blocked domain</b></td>
+            <td>First time this team has seen this kind — 3 times this week</td>
+            <td><span class="pill pill-neutral">still being looked at</span></td>
+          </tr>
+          <tr>
+            <td class="sev">⚪</td>
+            <td><b>Suspected prompt injection</b></td>
+            <td>Steady background rate — 10 today, normal for this team</td>
+            <td><span class="pill pill-neutral">expected, dismissed</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TEAM MEMBERS -->
+  <div class="section">
+    <div class="section-title">👥 Team members<span class="rule"></span><span class="hint">names only — no scores, no ranking</span></div>
+    <div class="card">
+      <div class="roster">
+        <a href="engineer.html">Alicia Wren</a>
+        <a href="engineer.html">Daniel Cho</a>
+        <a href="engineer.html">Grace Osei</a>
+        <a href="engineer.html">Hana Baptiste</a>
+        <a href="engineer.html">Jonas Ferreira</a>
+        <a href="engineer.html">Kwame Asare</a>
+        <a href="engineer.html">Leila Nasser</a>
+        <a href="engineer.html">Marcus Bell</a>
+        <a href="engineer.html">Noor Siddiqui</a>
+        <a href="engineer.html">Priya Nair</a>
+        <a href="engineer.html">Sam Okafor</a>
+        <a href="engineer.html">Theo Lindqvist</a>
+        <span style="color:var(--ink-faint);font-size:13px">+3 more — 15 on this team</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATES -->
+  <div class="section">
+    <div class="section-title">Other states<span class="rule"></span></div>
+    <div class="states-strip">
+      <div class="state-box">
+        <h4>Loading</h4>
+        <div class="skeleton w60"></div><div class="skeleton w80"></div><div class="skeleton" style="width:40%"></div>
+      </div>
+      <div class="state-box">
+        <h4>Empty — team has no runs this week</h4>
+        <div class="stat-note">"No runs yet this week. Last week's numbers are still below, for reference."</div>
+      </div>
+      <div class="state-box">
+        <h4>Error — budget figures unavailable</h4>
+        <div class="stat-note">"Couldn't load spend for this team. <span style="color:var(--accent)">Retry</span> — outcome and reliability data below is unaffected."</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot-note">Wireframe for layout only — numbers are believable examples, not real data. See docs/ui.md for the full spec.</div>
+</div>
+</body>
+</html>

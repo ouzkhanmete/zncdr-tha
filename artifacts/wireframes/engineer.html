@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Engineer page — wireframe</title>
+<style>
+:root{
+  --bg:#F3F5F7; --surface:#FFFFFF; --surface-2:#F7F8FA;
+  --border:#DADFE3; --border-strong:#B7BFC6;
+  --ink:#1C2126; --ink-soft:#5B6570; --ink-faint:#8D959C;
+  --accent:#3A5A9B; --accent-soft:#E8EDF6;
+  --good:#2E7D46; --good-soft:#E4F3E8;
+  --warn:#8A5E00; --warn-soft:#FBF0D9;
+  --bad:#B3261E; --bad-soft:#FBE7E5;
+  --mono:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:14px;line-height:1.45}
+.ribbon{background:#2A2E33;color:#fff;text-align:center;font-size:11px;letter-spacing:.04em;padding:5px;text-transform:uppercase}
+.shell{max-width:1180px;margin:0 auto;padding:0 24px 60px}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid var(--border);margin-bottom:22px;flex-wrap:wrap;gap:10px}
+.crumb{font-size:13px;color:var(--ink-soft)}
+.crumb a{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent}
+.crumb a:hover{border-bottom-color:var(--accent)}
+.crumb .sep{margin:0 6px;color:var(--ink-faint)}
+.crumb .current{color:var(--ink);font-weight:600}
+.nav-links{font-size:12px;display:flex;gap:14px}
+.nav-links a{color:var(--ink-soft);text-decoration:none;padding:4px 0;border-bottom:2px solid transparent}
+.nav-links a.active{color:var(--ink);border-bottom-color:var(--accent);font-weight:600}
+.nav-links a:hover{color:var(--ink)}
+.page-head{margin-bottom:24px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.page-head h1{font-size:22px;margin:0 0 4px}
+.page-head p{margin:0;color:var(--ink-soft);font-size:14px;max-width:560px}
+.window-ctrl{font-size:12px;color:var(--ink-soft);border:1px solid var(--border);border-radius:5px;padding:7px 12px;background:var(--surface);white-space:nowrap}
+.window-ctrl b{color:var(--ink)}
+.daterange{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:5px 8px;flex-wrap:wrap}
+.daterange .preset{font-family:var(--sans);font-size:11.5px;color:var(--ink-soft);background:transparent;border:1px solid transparent;border-radius:4px;padding:3px 9px;cursor:pointer}
+.daterange .preset:hover{background:var(--surface-2);color:var(--ink)}
+.daterange .preset.active{background:var(--accent-soft);color:var(--accent);border-color:#C3D0E6;font-weight:700}
+.daterange .dr-sep{width:1px;height:18px;background:var(--border);margin:0 3px}
+.daterange input[type=date]{font-family:var(--mono);font-size:12px;color:var(--ink);border:1px solid var(--border);border-radius:4px;padding:3px 6px;background:var(--surface)}
+.daterange .dr-arrow{color:var(--ink-faint);font-size:12px}
+.daterange .dr-note{font-size:11px;color:var(--ink-faint);width:100%;padding-top:2px}
+.section{margin-bottom:32px}
+.section-title{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);font-weight:700;margin:0 0 12px;display:flex;align-items:center;gap:10px}
+.section-title .rule{flex:1;height:1px;background:var(--border)}
+.section-title .hint{text-transform:none;font-weight:400;letter-spacing:0;color:var(--ink-faint);font-size:11.5px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:1fr 1fr 1fr}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:16px 18px}
+.card-label{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);font-weight:700;margin-bottom:8px}
+.stat{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:29px;font-weight:700;color:var(--ink);line-height:1}
+.stat.md{font-size:21px}
+.stat.sm{font-size:16px}
+.stat-note{font-size:12px;color:var(--ink-soft);margin-top:5px}
+.pair{display:flex;gap:0}
+.pair>div{flex:1;padding-right:16px}
+.pair>div+div{padding-left:16px;border-left:1px solid var(--border)}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap}
+.pill-good{background:var(--good-soft);color:var(--good)}
+.pill-warn{background:var(--warn-soft);color:var(--warn)}
+.pill-bad{background:var(--bad-soft);color:var(--bad)}
+.pill-neutral{background:var(--surface-2);color:var(--ink-soft);border:1px solid var(--border)}
+.spark{display:flex;align-items:flex-end;gap:4px;height:40px;margin-top:9px}
+.spark i{display:block;width:9px;background:var(--border-strong);border-radius:1px;font-style:normal}
+.spark i.now{background:var(--accent)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);font-weight:700;padding:8px 10px;border-bottom:1px solid var(--border-strong)}
+td{padding:9px 10px;border-bottom:1px solid var(--border)}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right}
+td.mid{text-align:center}
+tr:last-child td{border-bottom:none}
+tr.rowlink{cursor:pointer}
+tr.rowlink:hover{background:var(--surface-2)}
+tr.rowlink a{color:var(--accent);text-decoration:none}
+.timeline{display:flex;align-items:center;gap:0;margin-top:10px}
+.tl-seg{flex:1;height:6px;background:var(--border-strong)}
+.tl-seg.now{background:var(--accent)}
+.tl-dot{width:10px;height:10px;border-radius:50%;background:var(--ink-faint);flex-shrink:0}
+.tl-dot.now{background:var(--accent);width:12px;height:12px}
+.tl-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-soft);margin-top:6px}
+.states-strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:44px}
+.state-box{border:1px dashed var(--border-strong);border-radius:6px;padding:14px;background:var(--surface-2)}
+.state-box h4{margin:0 0 9px;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft)}
+.skeleton{height:10px;background:var(--border);border-radius:3px;margin-bottom:7px}
+.skeleton.w60{width:60%}
+.skeleton.w80{width:80%}
+.foot-note{margin-top:50px;font-size:11px;color:var(--ink-faint);text-align:center}
+.identity{display:flex;align-items:center;gap:14px}
+.avatar{width:44px;height:44px;border-radius:50%;background:var(--surface-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--ink-soft)}
+.chart-end{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.hbar-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.hbar-row:last-child{margin-bottom:0}
+.hbar-emoji{width:20px;text-align:center;font-size:15px;flex-shrink:0}
+.hbar-track{flex:1;height:15px;background:var(--surface-2);border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.hbar-fill{height:100%;border-radius:3px 0 0 3px}
+.hbar-val{width:120px;text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:12px;color:var(--ink-soft);flex-shrink:0}
+</style>
+</head>
+<body>
+<div class="ribbon">Wireframe — example data, not live</div>
+<div class="shell">
+
+  <div class="topbar">
+    <div class="crumb"><a href="org.html">Org</a><span class="sep">/</span><a href="team.html">Team: Nova</a><span class="sep">/</span><span class="current">Priya Nair</span></div>
+    <div class="nav-links">
+      <a href="org.html">Org</a>
+      <a href="team.html">Team</a>
+      <a class="active" href="engineer.html">Engineer</a>
+      <a href="run.html">Run</a>
+      <a href="index.html" style="margin-left:8px;color:var(--ink-faint)">index ↩</a>
+    </div>
+  </div>
+
+  <div class="page-head">
+    <div class="identity">
+      <div class="avatar">PN</div>
+      <div>
+        <h1 style="margin-bottom:2px">Priya Nair</h1>
+        <p>Is this helping me? Only against their own past — never a teammate's number.</p>
+      </div>
+    </div>
+    <div class="daterange">
+      <button class="preset">7d</button>
+      <button class="preset">30d</button>
+      <button class="preset active">90d</button>
+      <span class="dr-sep"></span>
+      <input type="date" value="2026-05-31" aria-label="From">
+      <span class="dr-arrow">&rarr;</span>
+      <input type="date" value="2026-08-29" aria-label="To">
+      <span class="dr-note">Days run midnight to midnight UTC</span>
+    </div>
+  </div>
+
+  <!-- STATUS -->
+  <div class="section">
+    <div class="section-title">Right now<span class="rule"></span><span class="hint">🚀 deep · 🔧 regular · 🌱 light · 💤 dormant</span></div>
+    <div class="card">
+      <div class="pair">
+        <div>
+          <div class="stat">🔧</div>
+          <div class="stat-note">5 weeks in this bucket · 21 runs in the last 30 days</div>
+          <div class="stat-note">🌱 for 3 weeks before that — climbing, not falling</div>
+        </div>
+        <div>
+          <svg viewBox="0 0 460 84" style="width:100%;height:auto;max-width:460px">
+            <line x1="30" y1="10" x2="420" y2="10" stroke="#DADFE3"/>
+            <line x1="30" y1="28" x2="420" y2="28" stroke="#DADFE3"/>
+            <line x1="30" y1="46" x2="420" y2="46" stroke="#DADFE3"/>
+            <line x1="30" y1="64" x2="420" y2="64" stroke="#DADFE3"/>
+            <text x="6" y="14" font-size="12">🚀</text>
+            <text x="6" y="32" font-size="12">🔧</text>
+            <text x="6" y="50" font-size="12">🌱</text>
+            <text x="6" y="68" font-size="12">💤</text>
+            <path d="M40,46 L170,46 L170,28 L404,28" fill="none" stroke="#3A5A9B" stroke-width="2.5"/>
+            <circle cx="40" cy="46" r="3.5" fill="#8D959C"/>
+            <circle cx="92" cy="46" r="3.5" fill="#8D959C"/>
+            <circle cx="144" cy="46" r="3.5" fill="#8D959C"/>
+            <circle cx="196" cy="28" r="3.5" fill="#8D959C"/>
+            <circle cx="248" cy="28" r="3.5" fill="#8D959C"/>
+            <circle cx="300" cy="28" r="3.5" fill="#8D959C"/>
+            <circle cx="352" cy="28" r="3.5" fill="#8D959C"/>
+            <circle cx="404" cy="28" r="5" fill="#3A5A9B"/>
+            <text x="40" y="80" font-size="9.5" fill="#8D959C" text-anchor="middle">8w ago</text>
+            <text x="404" y="80" font-size="9.5" fill="#8D959C" text-anchor="middle">now</text>
+          </svg>
+          <div class="stat-note">Own history only — never a teammate's bucket.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OWN 8-WEEK TRENDS -->
+  <div class="section">
+    <div class="section-title">Own 8-week trends<span class="rule"></span></div>
+    <div class="grid g3">
+
+      <div class="card">
+        <div class="card-label">Success rate<span style="text-transform:none;font-weight:400"> — ✅ first try · 🔁 in the end</span></div>
+        <svg viewBox="0 0 300 90" style="width:100%;height:auto">
+          <line x1="20" y1="74" x2="280" y2="74" stroke="#B7BFC6"/>
+          <polyline points="20,64.4 57.1,60.8 94.3,58.4 131.4,54.8 168.6,52.4 205.7,50 242.9,47.6 280,45.2" fill="none" stroke="#8D959C" stroke-width="2"/>
+          <polyline points="20,26 57.1,23.6 94.3,24.8 131.4,22.4 168.6,23.6 205.7,21.2 242.9,22.4 280,20" fill="none" stroke="#3A5A9B" stroke-width="2"/>
+          <circle cx="280" cy="45.2" r="4" fill="#8D959C"/>
+          <circle cx="280" cy="20" r="4" fill="#3A5A9B"/>
+          <text x="284" y="43" font-size="11" fill="#5B6570">✅ 74%</text>
+          <text x="284" y="17" font-size="11" fill="#3A5A9B">🔁 95%</text>
+          <text x="20" y="86" font-size="9.5" fill="#8D959C">8w ago</text>
+          <text x="280" y="86" font-size="9.5" fill="#8D959C" text-anchor="end">now</text>
+        </svg>
+        <div class="stat-note">✅ started at 58%, 🔁 has held 90–95% — the gap has been closing for two months.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Finished tasks, next to rework</div>
+        <div class="pair">
+          <div>
+            <div class="stat-note">Finished, this week</div>
+            <svg viewBox="0 0 130 74" style="width:100%;height:auto">
+              <line x1="10" y1="64" x2="120" y2="64" stroke="#B7BFC6"/>
+              <polyline points="10,43.75 25.7,43.75 41.4,37 57.1,37 72.9,30.25 88.6,30.25 104.3,23.5 120,23.5" fill="none" stroke="#3A5A9B" stroke-width="2"/>
+              <circle cx="120" cy="23.5" r="3.5" fill="#3A5A9B"/>
+              <text x="60" y="12" font-size="12" fill="#1C2126" text-anchor="middle" class="chart-end">4</text>
+            </svg>
+          </div>
+          <div>
+            <div class="stat-note">Rework rate</div>
+            <svg viewBox="0 0 130 74" style="width:100%;height:auto">
+              <line x1="10" y1="64" x2="120" y2="64" stroke="#B7BFC6"/>
+              <polyline points="10,20.1 25.7,23.5 41.4,24.9 57.1,26.9 72.9,30.3 88.6,37 104.3,43.8 120,49.8" fill="none" stroke="#8D959C" stroke-width="2"/>
+              <circle cx="120" cy="49.8" r="3.5" fill="#8D959C"/>
+              <text x="60" y="12" font-size="12" fill="#1C2126" text-anchor="middle" class="chart-end">2.1%</text>
+            </svg>
+          </div>
+        </div>
+        <div class="stat-note">Below their own 8-week average of 5%.</div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Cost per finished task</div>
+        <svg viewBox="0 0 300 90" style="width:100%;height:auto">
+          <line x1="20" y1="74" x2="280" y2="74" stroke="#B7BFC6"/>
+          <polyline points="20,21.5 57.1,32.75 94.3,40.25 131.4,47.75 168.6,53 205.7,59 242.9,62.75 280,66.5" fill="none" stroke="#3A5A9B" stroke-width="2"/>
+          <circle cx="20" cy="21.5" r="3.5" fill="#8D959C"/>
+          <circle cx="280" cy="66.5" r="4" fill="#3A5A9B"/>
+          <text x="20" y="15" font-size="11" fill="#5B6570">$210</text>
+          <text x="284" y="66" font-size="11" fill="#3A5A9B">$150</text>
+          <text x="20" y="86" font-size="9.5" fill="#8D959C">8w ago</text>
+          <text x="280" y="86" font-size="9.5" fill="#8D959C" text-anchor="end">now</text>
+        </svg>
+        <div class="stat-note">Getting more efficient over time — against their own past only.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FAILURES -->
+  <div class="section">
+    <div class="section-title">What's blocking you<span class="rule"></span><span class="hint">last 90 days · whose problem it is</span></div>
+    <div class="card">
+      <div class="hbar-row">
+        <span class="hbar-emoji">🔒</span>
+        <div class="hbar-track"><div class="hbar-fill" style="width:66.7%;background:var(--ink-soft)"></div></div>
+        <span class="hbar-val">4 runs · 33%</span>
+      </div>
+      <div class="hbar-row">
+        <span class="hbar-emoji">⚙️</span>
+        <div class="hbar-track"><div class="hbar-fill" style="width:33.3%;background:var(--ink-faint)"></div></div>
+        <span class="hbar-val">2 runs · 17%</span>
+      </div>
+      <div class="hbar-row">
+        <span class="hbar-emoji">🧩</span>
+        <div class="hbar-track"><div class="hbar-fill" style="width:100%;background:var(--border-strong)"></div></div>
+        <span class="hbar-val">6 runs · 50%</span>
+      </div>
+      <div class="stat-note" style="margin-top:10px">🔒 is a missing permission or secret — fixable today. ⚙️ is ours. 🧩 just means the task was hard. 🔒 is the one worth acting on.</div>
+    </div>
+  </div>
+
+  <!-- RUN HISTORY -->
+  <div class="section" style="margin-top:32px">
+    <div class="section-title">Recent runs<span class="rule"></span><span class="hint">click any row for the full run</span></div>
+    <div class="card">
+      <table>
+        <thead><tr><th>Date</th><th>Task</th><th>Agent</th><th class="mid">Out</th><th class="mid">✅/❌</th><th>Cost</th><th>Time</th></tr></thead>
+        <tbody>
+          <tr class="rowlink" onclick="location.href='run.html'">
+            <td>Aug 29</td><td><a href="run.html">Add retry logic to payment webhook handler</a></td>
+            <td>steady-coder</td><td class="mid">🔀</td><td class="mid">✅</td><td class="num">$2.14</td><td class="num">6m 40s</td>
+          </tr>
+          <tr class="rowlink" onclick="location.href='run.html'">
+            <td>Aug 28</td><td><a href="run.html">Write tests for refund reconciliation job</a></td>
+            <td>steady-coder</td><td class="mid">💾</td><td class="mid">✅</td><td class="num">$1.02</td><td class="num">3m 12s</td>
+          </tr>
+          <tr class="rowlink" onclick="location.href='run.html'">
+            <td>Aug 27</td><td><a href="run.html">Investigate duplicate charge on card decline</a></td>
+            <td>quickpatch-1</td><td class="mid">—</td><td class="mid">❌</td><td class="num">$1.85</td><td class="num">11m 05s</td>
+          </tr>
+          <tr class="rowlink" onclick="location.href='run.html'">
+            <td>Aug 26</td><td><a href="run.html">Update currency rounding for JPY</a></td>
+            <td>deep-thinker</td><td class="mid">🔀</td><td class="mid">✅</td><td class="num">$4.20</td><td class="num">2m 30s</td>
+          </tr>
+          <tr class="rowlink" onclick="location.href='run.html'">
+            <td>Aug 25</td><td><a href="run.html">Draft report on stale webhook subscriptions</a></td>
+            <td>steady-coder</td><td class="mid">📊</td><td class="mid">✅</td><td class="num">$0.91</td><td class="num">4m 02s</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="stat-note" style="margin-top:10px">🔀 pull request · 💾 commit · 📄 file · 📊 report</div>
+    </div>
+  </div>
+
+  <!-- STATES -->
+  <div class="section">
+    <div class="section-title">Other states<span class="rule"></span></div>
+    <div class="states-strip">
+      <div class="state-box">
+        <h4>Loading</h4>
+        <div class="skeleton w60"></div><div class="skeleton w80"></div><div class="skeleton" style="width:40%"></div>
+      </div>
+      <div class="state-box">
+        <h4>Empty — hasn't run anything yet</h4>
+        <div class="stat-note">"No runs yet. Once they start, their own trend builds up here — there's nothing to compare them to but themselves."</div>
+      </div>
+      <div class="state-box">
+        <h4>Error — trend unavailable</h4>
+        <div class="stat-note">"Couldn't load the trend for this period. <span style="color:var(--accent)">Retry</span> — recent runs below still loaded fine."</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot-note">Wireframe for layout only — numbers are believable examples, not real data. See docs/ui.md for the full spec.</div>
+</div>
+</body>
+</html>

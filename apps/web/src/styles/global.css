@@ -1,0 +1,1062 @@
+@import "./tokens.css";
+
+/* Base -------------------------------------------------------------------- */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+a {
+  color: var(--accent);
+}
+
+button,
+input {
+  font-family: inherit;
+  color: inherit;
+}
+
+.shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 24px 60px;
+}
+
+/* A slim, permanent reminder that step 4 runs on sample data -- gone once step 7 wires up the
+   real API. Deliberately not theme-tokenized: it's a meta-banner about the build, not part of
+   the product's own UI. */
+.ribbon {
+  background: #2a2e33;
+  color: #fff;
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 5px;
+  text-transform: uppercase;
+}
+
+/* Top bar: breadcrumb doubles as real navigation ---------------------------- */
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.crumb {
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.crumb a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.crumb a:hover {
+  border-bottom-color: var(--accent);
+}
+
+.crumb .sep {
+  margin: 0 6px;
+  color: var(--ink-faint);
+}
+
+.crumb .current {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* Page head + date range picker --------------------------------------------- */
+
+.page-head {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.page-head h1 {
+  font-size: 22px;
+  margin: 0 0 4px;
+}
+
+.page-head p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 14px;
+  max-width: 560px;
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: var(--ink-soft);
+  flex-shrink: 0;
+}
+
+.daterange {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 5px 8px;
+  flex-wrap: wrap;
+}
+
+.daterange .preset {
+  font-family: var(--sans);
+  font-size: 11.5px;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 3px 9px;
+  cursor: pointer;
+}
+
+.daterange .preset:hover {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+.daterange .preset.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: var(--accent-border);
+  font-weight: 700;
+}
+
+.daterange .dr-sep {
+  width: 1px;
+  height: 18px;
+  background: var(--border);
+  margin: 0 3px;
+}
+
+.daterange input[type="date"] {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 3px 6px;
+  background: var(--surface);
+}
+
+.daterange .dr-arrow {
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+
+.daterange .dr-note {
+  font-size: 11px;
+  color: var(--ink-faint);
+  width: 100%;
+  padding-top: 2px;
+}
+
+.daterange .dr-fixed {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink);
+}
+
+/* Sections & grid ------------------------------------------------------------ */
+
+.section {
+  margin-bottom: 32px;
+}
+
+.section-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  font-weight: 700;
+  margin: 0 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-title .rule {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.section-title .hint {
+  text-transform: none;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--ink-faint);
+  font-size: 11.5px;
+}
+
+.grid {
+  display: grid;
+  gap: 14px;
+}
+
+.g2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.g3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+@media (max-width: 760px) {
+  .g2,
+  .g3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Cards & stats --------------------------------------------------------------- */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px 18px;
+}
+
+.card-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-soft);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.stat {
+  font-family: var(--sans);
+  font-variant-numeric: proportional-nums;
+  font-size: 29px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.stat.md {
+  font-size: 21px;
+}
+
+.stat.sm {
+  font-size: 16px;
+}
+
+.stat-note {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-top: 5px;
+}
+
+.stat-note.bad {
+  color: var(--bad);
+}
+
+.stat-note.warn {
+  color: var(--warn);
+}
+
+/* Pair layout: a speed/volume number never sits next to its quality number without a shared card
+   and a real divider between them -- see docs/ui.md's "Pair layout, not just pair rules." */
+.pair {
+  display: flex;
+  gap: 0;
+}
+
+.pair > div {
+  flex: 1;
+  padding-right: 16px;
+  min-width: 0;
+}
+
+.pair > div + div {
+  padding-left: 16px;
+  border-left: 1px solid var(--border);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.pill-good {
+  background: var(--good-soft);
+  color: var(--good);
+}
+
+.pill-warn {
+  background: var(--warn-soft);
+  color: var(--warn);
+}
+
+.pill-bad {
+  background: var(--bad-soft);
+  color: var(--bad);
+}
+
+.pill-neutral {
+  background: var(--surface-2);
+  color: var(--ink-soft);
+  border: 1px solid var(--border);
+}
+
+/* Bars ------------------------------------------------------------------------ */
+
+.bar-track {
+  position: relative;
+  height: 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.bar-track.tall {
+  height: 22px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+.bar-mark {
+  position: absolute;
+  top: -6px;
+  bottom: -6px;
+  width: 0;
+  border-left: 2px dashed var(--ink-faint);
+}
+
+.bar-mark.stop {
+  border-left: 2px solid var(--bad);
+}
+
+.bar-mark.warn {
+  border-left: 2px solid var(--warn);
+}
+
+/* A short word riding a coloured line marker (BudgetPaceBar's warning/stop lines) -- replaces an
+   emoji pin, which is unreadable at this size. See docs/ui.md's emoji section: emoji stand in for
+   a word in running text, not for a mark inside a chart. */
+.bar-line-label {
+  position: absolute;
+  top: -13px;
+  left: 0;
+  transform: translateX(-50%);
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.bar-line-label.warn {
+  color: var(--warn);
+}
+
+.bar-line-label.stop {
+  color: var(--bad);
+}
+
+.legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-top: 8px;
+}
+
+.legend .lk {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.legend .sw {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  display: inline-block;
+  border: 1px solid var(--border-strong);
+}
+
+/* Tables ------------------------------------------------------------------ */
+
+/* A wide table scrolls inside its own box. Without this the whole page slides
+   sideways on a narrow screen, which makes every other column unreadable. */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+th {
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  font-weight: 700;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+th.num {
+  text-align: right;
+}
+
+td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Numbers line up: every stacked column of numbers uses tabular figures. */
+td.num,
+.tabular {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+td.mid {
+  text-align: center;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr.rowlink {
+  cursor: pointer;
+  position: relative;
+}
+
+/* Run page, turn by turn: each tool call under a turn gets its own line instead of running
+   together into one unreadable string. A grid keeps outcome / tool / target / time lined up so a
+   reader can scan straight down a column, the way the table above it does. */
+.tool-calls {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 3px 0;
+}
+
+.tool-call {
+  display: grid;
+  grid-template-columns: 78px 150px minmax(0, 1fr) 56px;
+  column-gap: 12px;
+  align-items: baseline;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+.tc-outcome {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.tc-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.tc-dot.ok {
+  background: var(--good);
+}
+
+/* Not var(--bad) on purpose: a tool call that failed (and was retried) is ordinary, not something
+   to act on now -- docs/ui.md reserves red for that. Same muted treatment as everything else. */
+.tc-dot.failed {
+  background: var(--ink-faint);
+}
+
+.tc-dot.timeout {
+  background: var(--warn);
+}
+
+.tc-name {
+  font-family: var(--mono);
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tc-target {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.tc-duration {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--ink-faint);
+}
+
+tr.rowlink:hover {
+  background: var(--surface-2);
+}
+
+tr.rowlink a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+/* Stretches a row's one real link across the whole `<tr>`, so a click anywhere in the row
+   activates it while a keyboard tab and a screen reader still see exactly one real `<a>` --
+   docs/ui.md's rule for a clickable row: "use a real link, not a click handler on a `<tr>`." */
+tr.rowlink a.stretched-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+/* Caption sentences that state a rule -- these stay, per docs/ui.md. */
+.caption {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-top: 8px;
+  max-width: 640px;
+}
+
+/* Hero -------------------------------------------------------------------- */
+
+.hero {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  border-radius: 8px;
+  padding: 20px 22px;
+  margin-bottom: 28px;
+}
+
+.hero-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.hero-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.hero-title span {
+  display: block;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  margin-top: 3px;
+  max-width: 420px;
+}
+
+.hero-inputs {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+
+/* Every editable field looks editable: bordered, coloured outline, unlike any read-only
+   number on the page -- docs/ui.md. */
+.input-box label {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.input-box .field {
+  display: flex;
+  align-items: center;
+  background: var(--surface);
+  border: 1.5px solid var(--accent);
+  border-radius: 5px;
+  padding: 6px 10px;
+  gap: 5px;
+}
+
+.input-box input {
+  border: none;
+  outline: none;
+  font-family: var(--mono);
+  font-size: 16px;
+  width: 64px;
+  background: transparent;
+  color: var(--ink);
+}
+
+.input-box .unit {
+  color: var(--ink-soft);
+  font-size: 12.5px;
+}
+
+.hero-result {
+  display: flex;
+  gap: 0;
+  align-items: stretch;
+  flex-wrap: wrap;
+  background: var(--surface);
+  border: 1px solid var(--accent-border);
+  border-radius: 6px;
+  padding: 16px 18px;
+}
+
+.hero-result .col {
+  flex: 1;
+  padding: 0 18px;
+  min-width: 160px;
+}
+
+.hero-result .col + .col {
+  border-left: 1px solid var(--border);
+}
+
+.hero-net .stat {
+  color: var(--good);
+}
+
+.hero-net.negative .stat {
+  /* Net negative is not automatically red -- see docs/ui.md: red is reserved for act-now
+     situations, not for a below-average or negative arithmetic result. */
+  color: var(--ink);
+}
+
+.hero-chart {
+  margin-top: 14px;
+  background: var(--surface);
+  border: 1px solid var(--accent-border);
+  border-radius: 6px;
+  padding: 14px 18px;
+}
+
+.breakeven {
+  margin: 0 0 28px;
+  font-size: 13.5px;
+  color: var(--ink);
+}
+
+/* Failure groups ------------------------------------------------------------ */
+
+.fail-groups {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+}
+
+/* Each column needs room for its widest cause label (210px, see FailureGroups.tsx) plus a bar and
+   its value -- below this the 3-column layout would squeeze the label back into the clipping this
+   rule exists to prevent, so it stacks to one column sooner than it otherwise would. */
+@media (max-width: 940px) {
+  .fail-groups {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fail-group h4 {
+  margin: 0 0 3px;
+  font-size: 13px;
+}
+
+.fail-group .fg-total {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.fail-group .fg-sub {
+  font-size: 11.5px;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+}
+
+.fail-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12.5px;
+  padding: 5px 0;
+  border-top: 1px solid var(--border);
+}
+
+.fail-row span.n {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-soft);
+}
+
+.fg-org {
+  border-top: 3px solid var(--blame-org);
+  padding-top: 10px;
+}
+
+.fg-platform {
+  border-top: 3px solid var(--blame-platform);
+  padding-top: 10px;
+}
+
+.fg-task {
+  border-top: 3px solid var(--blame-task);
+  padding-top: 10px;
+}
+
+/* Roster (team members): plain names, alphabetical, nothing else -- docs/product-brief.md's
+   "no leaderboards" rule is enforced hardest here. */
+.roster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+}
+
+.roster a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 13.5px;
+}
+
+.roster a:hover {
+  text-decoration: underline;
+}
+
+/* Loading / empty / error states -------------------------------------------- */
+
+.states-strip {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 760px) {
+  .states-strip {
+    grid-template-columns: 1fr;
+  }
+}
+
+.state-box {
+  border: 1px dashed var(--border-strong);
+  border-radius: 6px;
+  padding: 14px;
+  background: var(--surface-2);
+}
+
+.state-box h4 {
+  margin: 0 0 9px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+}
+
+.skeleton {
+  height: 10px;
+  background: var(--border);
+  border-radius: 3px;
+  margin-bottom: 7px;
+}
+
+.skeleton.w40 {
+  width: 40%;
+}
+
+.skeleton.w60 {
+  width: 60%;
+}
+
+.skeleton.w80 {
+  width: 80%;
+}
+
+.section-error {
+  border: 1px dashed var(--bad);
+  border-radius: 6px;
+  padding: 14px 16px;
+  background: var(--bad-soft);
+  color: var(--bad);
+  font-size: 13px;
+}
+
+.section-error button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--bad);
+  text-decoration: underline;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.section-empty {
+  border: 1px dashed var(--border-strong);
+  border-radius: 6px;
+  padding: 16px 18px;
+  background: var(--surface-2);
+  color: var(--ink-soft);
+  font-size: 13.5px;
+}
+
+.foot-note {
+  margin-top: 50px;
+  font-size: 11px;
+  color: var(--ink-faint);
+  text-align: center;
+}
+
+/* Chart chrome -------------------------------------------------------------- */
+
+/* Charts keep a visible border in dark mode rather than relying on colour alone --
+   docs/ui.md's dark-mode rule. */
+.chart-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+svg text {
+  font-family: var(--sans);
+}
+
+.hbar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 9px;
+}
+
+.hbar-row:last-child {
+  margin-bottom: 0;
+}
+
+.hbar-emoji {
+  width: 20px;
+  text-align: center;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.hbar-track {
+  flex: 1;
+  height: 15px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.hbar-fill {
+  height: 100%;
+  border-radius: 3px 0 0 3px;
+}
+
+.hbar-val {
+  width: 130px;
+  text-align: right;
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+  color: var(--ink-soft);
+  flex-shrink: 0;
+}
+
+.mini-pair {
+  display: flex;
+  gap: 0;
+}
+
+.mini-pair > div {
+  flex: 1;
+  padding-right: 18px;
+  min-width: 0;
+}
+
+.mini-pair > div + div {
+  padding-left: 18px;
+  border-left: 1px solid var(--border);
+}
+
+.mini-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.mini-head .mv {
+  font-family: var(--sans);
+  font-variant-numeric: proportional-nums;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.mini-head .ml {
+  font-size: 11px;
+  color: var(--ink-soft);
+  text-align: right;
+}
+
+.range {
+  position: relative;
+  height: 56px;
+  margin-top: 14px;
+}
+
+.range .line {
+  position: absolute;
+  top: 34px;
+  left: 6px;
+  right: 6px;
+  height: 2px;
+  background: var(--border-strong);
+}
+
+.range .dot {
+  position: absolute;
+  top: 28px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  border: 2px solid var(--surface);
+}
+
+.range .dot.median {
+  background: var(--accent);
+  width: 16px;
+  height: 16px;
+  top: 26px;
+  z-index: 2;
+}
+
+.range .dot.avgd {
+  background: var(--ink-soft);
+}
+
+.range .dot.worst {
+  background: var(--bad);
+}
+
+/* Tighter line-height than body copy -- the label is two stacked lines (value, then word) that
+   must clear the dot sitting on the line below it, and the default paragraph line-height leaves
+   too little room for that. */
+.range .rlabel {
+  position: absolute;
+  top: -6px;
+  font-size: 11px;
+  line-height: 1.2;
+  color: var(--ink-soft);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  text-align: center;
+}
+
+.range .rlabel b {
+  display: block;
+  font-family: var(--mono);
+  color: var(--ink);
+  font-size: 12.5px;
+}
+
+.sev-key {
+  font-size: 11px;
+  color: var(--ink-faint);
+  margin-bottom: 8px;
+}
+
+.callout {
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-size: 13px;
+  margin-top: 12px;
+}
+
+.callout.bad {
+  background: var(--bad-soft);
+  color: var(--bad);
+}
+
+.callout.neutral {
+  background: var(--surface-2);
+  color: var(--ink);
+  border: 1px solid var(--border);
+}

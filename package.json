@@ -1,0 +1,21 @@
+{
+  "name": "agent-analytics",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "start": "./start.sh",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test",
+    "api": "bun run --cwd apps/api dev",
+    "web": "bun run --cwd apps/web dev",
+    "seed": "bun run --cwd apps/api seed"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "@types/bun": "latest"
+  }
+}
