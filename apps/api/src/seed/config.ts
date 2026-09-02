@@ -6,13 +6,22 @@ export const DEFAULT_SEED = 42
 
 export const TOTAL_DAYS = 180
 
-// Day 1 of the org's history, chosen so day 180 lands late in a month (August 28, 2026) --
-// a "spent so far this month" number means little on day 2 of a month, and the whole point of
-// Nova and Atlas's budget story is that it reads as a real mid-to-late-month snapshot.
-export const ORG_START_MS = Date.UTC(2026, 2, 2) // 2026-03-02, a Monday
+export const DAY_MS = 24 * 60 * 60 * 1000
+
+// "Today", truncated to UTC midnight -- the one moment every date in the seed is anchored to.
+const now = new Date()
+const TODAY_UTC_MS = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())
+
+// Day 1 of the org's history. Day 180 is always today: a rolling anchor, not a fixed calendar
+// date, so `bun run seed` never goes stale. It used to be pinned to 2026-03-02 specifically so
+// day 180 landed late in a month (28 August 2026) -- but a fixed date only stays "late in a
+// month" until the real calendar catches up to it. Once it did, GET /api/budget-status (which
+// always asks for the real current month) found a budgets table stamped with a month that had
+// already passed, and the org page's budget table rendered empty. See docs/seed-data.md.
+export const ORG_START_MS = TODAY_UTC_MS - (TOTAL_DAYS - 1) * DAY_MS
 
 export function dateForDay(day: number): Date {
-  return new Date(ORG_START_MS + (day - 1) * 24 * 60 * 60 * 1000)
+  return new Date(ORG_START_MS + (day - 1) * DAY_MS)
 }
 
 /** ISO 8601 UTC, second precision, no milliseconds -- the exact form docs/data-model.md shows. */
@@ -48,19 +57,42 @@ export const TEAMS: readonly TeamConfig[] = [
   { name: "Pinnacle", engineers: 14, adoptionDay: 165, dormantRate: 0.6, usageIntensity: 1.0 },
 ]
 
-// Nova's "rough week" -- the week its spend crosses its stop line and about a dozen high
-// severity flags land, all in the same few days. Falls inside both Nova's active window (day
-// 130+) and the current month (August) the budgets table reports on, with two quieter weeks
-// left afterward before day 180.
-export const NOVA_BAD_WEEK_START_DAY = 160
-export const NOVA_BAD_WEEK_END_DAY = 166 // inclusive
-
-// The month the budgets table holds "this month's" numbers for -- the calendar month day 180
-// falls in. Everything before month start is history; nothing exists after day 180.
-export const CURRENT_MONTH = "2026-08"
-export const CURRENT_MONTH_START_MS = Date.UTC(2026, 7, 1)
+// The month the budgets table holds "this month's" numbers for -- the real calendar month day
+// 180 (today) falls in. Matches `currentUtcMonth()` in packages/shared/src/api.ts, which is what
+// GET /api/budget-status resolves to whenever no month is given. Everything before month start
+// is history; nothing exists after day 180.
+export const CURRENT_MONTH = `${now.getUTCFullYear()}-${String(now.getUTCMonth() + 1).padStart(2, "0")}`
+export const CURRENT_MONTH_START_MS = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1)
 // Exclusive upper bound: the instant right after day 180 ends.
-export const DATA_END_MS = ORG_START_MS + TOTAL_DAYS * 24 * 60 * 60 * 1000
+export const DATA_END_MS = ORG_START_MS + TOTAL_DAYS * DAY_MS
+
+// How many days the current real calendar month has in total (28-31) -- used to turn a team's
+// typical daily spend into "what a full month of that would cost," instead of a monthly budget
+// that shrinks to match however little of the month has actually happened. See the note on
+// generateBudgets in generate/budgets.ts for the bug this was pulled out to fix.
+export const DAYS_IN_CURRENT_MONTH = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 0)).getUTCDate()
+
+// How many days of the current calendar month have actually happened by day 180 (today) -- 1 on
+// the 1st of a month, up to 31. This can be very small, which is exactly the situation the
+// rolling anchor above exists to make look alive rather than empty (see docs/seed-data.md).
+const ELAPSED_DAYS_THIS_MONTH = now.getUTCDate()
+
+// Nova's "rough week" -- the week its spend crosses its stop line and about a dozen high
+// severity flags land, all in the same few days. Has to fall inside both Nova's active window
+// (day 130+) and the current month the budgets table reports on -- and the current month can now
+// be as short as a single day, so a fixed day-160-166 offset from day 180 can no longer be
+// trusted to land inside it.
+//
+// Sized to whatever has actually elapsed this month instead: a real week (or less, if the month
+// itself is younger than a week), followed by up to two calmer weeks of recovery before day 180
+// -- but never claiming more of either than the month has actually had. Run this on the 28th of
+// a 28-day month and it reproduces the original 160-166 exactly; run it on the 2nd and the "week"
+// is just today and yesterday with no room left for recovery -- which is the more honest story
+// anyway (a team that burned its whole month in two days), not a worse one.
+const NOVA_BAD_WEEK_LENGTH = Math.min(7, ELAPSED_DAYS_THIS_MONTH)
+const NOVA_RECOVERY_DAYS = Math.min(14, ELAPSED_DAYS_THIS_MONTH - NOVA_BAD_WEEK_LENGTH)
+export const NOVA_BAD_WEEK_END_DAY = TOTAL_DAYS - NOVA_RECOVERY_DAYS
+export const NOVA_BAD_WEEK_START_DAY = NOVA_BAD_WEEK_END_DAY - NOVA_BAD_WEEK_LENGTH + 1 // inclusive
 
 // Nova and Atlas's budget story is named to the dollar in docs/seed-data.md, so their limits
 // and this-month spend targets are fixed constants rather than derived like every other team's.

@@ -147,6 +147,13 @@ money on purpose: it lets you tell "we used more" apart from "the price changed"
 80% of the budget gone on day 10 and 80% gone on day 28 are completely different situations and
 the same bar would show them the same way. The pace is the number that matters.
 
+> **A limit is a monthly number and does not move with the calendar.** It is what somebody agreed
+> to spend over a month; it does not shrink because today is the 2nd. Size a team's limit from how
+> much that team typically burns in a day, times a month — never from what it happens to have spent
+> so far. Get this backwards and every team reads as wildly over pace early in the month, which
+> makes "over pace" the normal state and kills the one signal this screen exists to give.
+> Two teams standing out is a dashboard. Six teams standing out is noise.
+
 Two lines per budget: a **warning line** that only warns, and a **stop line** that would block
 new runs. A hard stop with nothing to fall back on just breaks someone's afternoon, so the
 warning line is the one meant for daily use.

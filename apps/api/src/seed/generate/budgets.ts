@@ -1,7 +1,22 @@
 import type { Rng } from "../rng.ts"
-import { ATLAS_BUDGET, CURRENT_MONTH, CURRENT_MONTH_START_MS, DATA_END_MS, NOVA_BUDGET, toIso } from "../config.ts"
+import {
+  ATLAS_BUDGET,
+  CURRENT_MONTH,
+  CURRENT_MONTH_START_MS,
+  DATA_END_MS,
+  DAY_MS,
+  DAYS_IN_CURRENT_MONTH,
+  NOVA_BUDGET,
+  TOTAL_DAYS,
+  toIso,
+} from "../config.ts"
 import type { GeneratedTeam } from "./org.ts"
 import type { GeneratedRun, GeneratedToolCall, GeneratedTurn } from "./runs.ts"
+
+// How far back from day 180 (today) to look when sizing an ordinary team's limit off its own
+// pace, rather than off however little of the current month has elapsed. Deliberately not tied
+// to the calendar month boundary -- see `typicalDailySpendCents` below.
+const RECENT_DAILY_SPEND_WINDOW_DAYS = 30
 
 export interface GeneratedBudget {
   id: number
@@ -21,6 +36,27 @@ function currentMonthSpend(runs: readonly GeneratedRun[], teamId: number): numbe
   return runs
     .filter((r) => r.teamId === teamId && isInCurrentMonth(r))
     .reduce((sum, r) => sum + r.totalCostCents, 0)
+}
+
+/**
+ * A team's average daily cost over its most recent `windowDays`, ending at day 180 (today) --
+ * *not* clipped to the current calendar month. A monthly limit is something a budget owner signs
+ * off on for the month ahead; it doesn't shrink because the month happens to be two days old. See
+ * the note on `generateBudgets` below for the bug this replaced.
+ *
+ * Clipped to how long the team has actually existed, so a team adopted more recently than
+ * `windowDays` ago (Pinnacle, at 15-16 days old by day 180) doesn't get divided by 30 days of
+ * which half never had a chance to have any spend -- that would halve its apparent daily rate and
+ * undersize its limit right when its own recent activity is all there is to go on.
+ */
+function typicalDailySpendCents(runs: readonly GeneratedRun[], teamId: number, adoptionDay: number, windowDays: number): number {
+  const daysActive = TOTAL_DAYS - adoptionDay + 1
+  const effectiveWindowDays = Math.max(1, Math.min(windowDays, daysActive))
+  const windowStartMs = DATA_END_MS - effectiveWindowDays * DAY_MS
+  const total = runs
+    .filter((r) => r.teamId === teamId && r.startedAtMs >= windowStartMs && r.startedAtMs < DATA_END_MS)
+    .reduce((sum, r) => sum + r.totalCostCents, 0)
+  return total / effectiveWindowDays
 }
 
 /**
@@ -67,8 +103,20 @@ function scaleTeamCurrentMonthCost(
 /**
  * One budget row per team, for the current month only -- docs/seed-data.md calls for "one row
  * per team, holding this month's dollar limit," not a full history. Nova and Atlas are pinned to
- * their named story; every other team gets a limit sized so this month's organic spend lands
- * somewhere plausibly comfortable, not suspiciously round.
+ * their named story; every other team gets a limit sized off its own typical daily spend, not off
+ * this month's organic spend-to-date.
+ *
+ * That distinction matters because of the rolling anchor in config.ts: the current month can be
+ * anywhere from a single day old to nearly a full month old. A limit sized off spend-to-date
+ * (`organic / utilization`, as this used to read) is really "spend-to-date, inflated a bit" --
+ * fine when spend-to-date already covers ~28 days, but on a 2-day-old month it produces a
+ * "monthly" limit like $50 for a 40-person team, and every team's burn pace comes out looking
+ * like it's already 5-15x over pace, because the limit itself was only ever sized for two days.
+ * The whole point of the burn-pace chart -- 80% spent on day 10 means something different than
+ * 80% spent on day 28 -- collapses if the limit moves with the calendar too. Sizing off a
+ * trailing daily average instead keeps the limit stable regardless of what day the seed runs on,
+ * so an ordinary team's pace reads as roughly on track (spend-to-date tracking day-of-month, both
+ * small early in the month) instead of permanently alarming.
  */
 export function generateBudgets(
   rng: Rng,
@@ -90,11 +138,23 @@ export function generateBudgets(
     } else if (team.name === "Atlas") {
       if (organic > 0) scaleTeamCurrentMonthCost(runs, turns, toolCalls, team.id, ATLAS_BUDGET.targetSpentCents / organic)
       limitCents = ATLAS_BUDGET.limitCents
-    } else if (organic > 0) {
-      const utilization = rng.float(0.35, 0.75)
-      limitCents = Math.max(5_000, Math.round(organic / utilization / 5_000) * 5_000)
     } else {
-      limitCents = 5_000 // a nominal floor for a team with no spend yet this month
+      const dailyAvg = typicalDailySpendCents(runs, team.id, team.adoptionDay, RECENT_DAILY_SPEND_WINDOW_DAYS)
+      if (dailyAvg > 0) {
+        // `utilization` is the fraction of a full month's limit a team is meant to have used by
+        // month end -- 35-75%, always comfortably under the 80% warning line. Projecting the
+        // recent daily average across the *actual* number of days in this calendar month (28-31,
+        // not a flat 30) means limit-so-far tracks day-of-month the same way spend-so-far does,
+        // so their ratio stays near `utilization` whether the seed runs on day 2 or day 29.
+        //
+        // Rounded UP to the nearest $50, never down: rounding down could shave just enough off
+        // the limit to push an early, still-small spend-to-date back over it by coincidence --
+        // the exact failure this produced for Anchor before this was sized off a daily average.
+        const utilization = rng.float(0.35, 0.75)
+        limitCents = Math.max(5_000, Math.ceil((dailyAvg * DAYS_IN_CURRENT_MONTH) / utilization / 5_000) * 5_000)
+      } else {
+        limitCents = 5_000 // a nominal floor for a team with no recent spend at all
+      }
     }
 
     const warnCents = Math.round(limitCents * 0.8)
